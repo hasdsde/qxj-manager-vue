@@ -4,14 +4,15 @@ export function getLocalItem(item: string) {
   return localStorage.getItem(item)
 }
 // 一般成功消息
-export function CommonSuccess(msg: string) {
+export function CommonSuccess() {
   Notify.create({
     type: 'positive',
-    message: msg,
+    message: '操作成功',
     position: 'top',
     group: false
   })
 }
+
 export function CommonWarn(msg: string) {
   Notify.create({
     type: 'warning',
@@ -20,10 +21,10 @@ export function CommonWarn(msg: string) {
     group: false
   })
 }
-export function CommonFail(msg: string) {
+export function CommonFail() {
   Notify.create({
     type: 'negative',
-    message: msg,
+    message: '操作失败',
     position: 'top',
     group: false
   })
