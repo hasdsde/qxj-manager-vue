@@ -1,23 +1,28 @@
 //侧栏菜单
 import { ref } from "vue";
 
-export let menus = ref([
+export let menu = ref([
   {
     icon: 'home', label: '主页', id: 1, isopen: true, children: [
-      { link: 'Dashboard', icon: 'donut_large', desc: '仪表盘', id: 4, },
-      { link: 'CheckInfo', icon: 'notifications_active', desc: '实时监控', id: 5 },
+      { link: 'CheckInfo', icon: 'donut_large', desc: '实时监控', id: 5 },
     ]
   },
   {
-    icon: 'perm_identity', label: '管理', isopen: false, id: 2, children: [
-      { link: 'UserManager', icon: 'people_alt', desc: '用户管理', id: 6 },
-      { link: 'ItemManager', icon: 'shopping_bag', desc: '物品管理', id: 7 },
+    icon: 'settings', label: '审核管理', id: 3, isopen: false, children: [
+      { link: 'UserSetting', icon: 'schedule', desc: '请假审核', id: 8 },
+      { link: 'About', icon: 'how_to_reg', desc: '注册审核', id: 9 },
     ]
   },
   {
-    icon: 'settings', label: '设置', id: 3, isopen: false, children: [
-      { link: 'UserSetting', icon: 'admin_panel_settings', desc: '用户设置', id: 8 },
-      { link: 'About', icon: 'info', desc: '关于', id: 9 },
+    icon: 'perm_identity', label: '人员管理', isopen: false, id: 2, children: [
+      { link: 'UserManager', icon: 'face', desc: '学生管理', id: 6 },
+      { link: 'ItemManager', icon: 'people_alt', desc: '教师管理', id: 7 },
+    ]
+  },
+  {
+    icon: 'category', label: '系统设置', isopen: false, id: 10, children: [
+      { link: 'UserManager', icon: 'settings', desc: '设置', id: 11 },
+      { link: 'ItemManager', icon: 'info', desc: '关于', id: 12 },
     ]
   }
 ])

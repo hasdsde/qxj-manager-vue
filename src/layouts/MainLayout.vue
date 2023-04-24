@@ -14,7 +14,7 @@
         <q-item-label header>
           Essential Links
         </q-item-label>
-
+        <Aside />
       </q-list>
     </q-drawer>
 
@@ -26,7 +26,7 @@
 
 <script setup lang="ts">
 import { ref } from 'vue';
-
+import Aside from 'src/components/Aside.vue';
 
 const leftDrawerOpen = ref(false)
 
