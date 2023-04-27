@@ -4,7 +4,8 @@
         <div class="col q-mb-md">
             <div class="row justify-between">
                 <div class="col">
-                    <q-btn color="primary" class="q-mr-md" label="刷新" icon="refresh"/>
+                    <q-btn color="primary" class="q-mr-md" label="刷新" icon="refresh"
+                           @click="refresh"/>
                     <q-btn color="secondary" class="q-mr-md" label="新增" icon="add"/>
                     <q-btn color="red" class="q-mr-md" label="删除" icon="delete"/>
                 </div>
@@ -20,9 +21,9 @@
         <div>
             <q-table title="学生管理"
                      :rows="studentList"
-                     :columns="columns"
+                     :columns="studentColumns"
                      row-key="name"
-                     :pagination="{rowsNumber:pageSize}"
+                     :pagination="{rowsNumber:page.pageSize}"
                      selection="multiple"
                      v-model:selected="selected"
                      hide-pagination>
@@ -46,8 +47,8 @@
             </q-table>
             <div class="q-pa-lg flex flex-center">
                 <q-pagination
-                        v-model="currentPage"
-                        :max="totalPage"
+                        v-model="page.currentPage"
+                        :max="page.totalPage"
                         direction-links
                 />
             </div>
@@ -57,22 +58,15 @@
 <script setup lang="ts">
 import {api} from 'src/boot/axios';
 import {ref} from 'vue';
-import getTotalPage from "components/utils";
+import {Page} from "components/entity";
+import {CommonLoading, CommonSuccess, LoadingFinish} from "components/commonResults";
+import {useQuasar} from "quasar";
 
+const $q = useQuasar()
 
-//加载表格
-const studentList = ref([])
-const selected = ref([])
-loadPage()
-
-function loadPage() {
-    api.get("/admin/user?currentPage=1&pageSize=10").then(res => {
-        studentList.value = res.data
-    })
-}
 
 //分页管理
-const columns: any = [
+const studentColumns: any = [
     {name: 'studentId', align: 'center', label: '学生id', 'field': 'studentId'},
     {name: 'name', align: 'center', label: '姓名', 'field': 'name'},
     {name: 'number', align: 'center', label: '学号', 'field': 'number'},
@@ -87,10 +81,31 @@ const columns: any = [
     {name: 'enable', align: 'center', label: '账号状态', 'field': 'enable'},
     {name: 'handle', align: 'center', label: '操作', 'field': 'handle'},
 ]
-const currentPage = ref(1)
-const pageSize = ref(20)
-const total = ref(21)
-const totalPage = ref(getTotalPage(pageSize.value, total.value))
+const page = ref(new Page(1, 20, 21,))
+
+//加载页面
+const studentList = ref([])
+const selected = ref([])
+loadPage()
+
+function loadPage() {
+    CommonLoading($q)
+    api.get("/admin/user", {
+        params: {
+            'currentPage': page.value.currentPage,
+            'pageSize': page.value.pageSize
+        }
+    }).then(res => {
+        studentList.value = res.data
+        LoadingFinish($q)
+    })
+}
+
+function refresh() {
+    loadPage()
+    CommonSuccess('刷新完成')
+}
+
 
 //搜索
 const searchName = ref('')

@@ -4,7 +4,7 @@
         <div class="col q-mb-md">
             <div class="row justify-between">
                 <div class="col">
-                    <q-btn color="primary" class="q-mr-md" label="刷新" icon="refresh"/>
+                    <q-btn color="primary" class="q-mr-md" label="刷新" icon="refresh" @click="loadPage"/>
                     <q-btn color="secondary" class="q-mr-md" label="新增" icon="add"/>
                     <q-btn color="red" class="q-mr-md" label="删除" icon="delete"/>
                 </div>
@@ -22,7 +22,7 @@
                      :rows="studentList"
                      :columns="columns"
                      row-key="name"
-                     :pagination="{rowsNumber:pageSize}"
+                     :pagination="{rowsNumber:page.pageSize}"
                      selection="multiple"
                      v-model:selected="selected"
                      hide-pagination>
@@ -46,18 +46,36 @@
             </q-table>
             <div class="q-pa-lg flex flex-center">
                 <q-pagination
-                        v-model="currentPage"
-                        :max="totalPage"
+                        v-model="page.currentPage"
+                        :max="page.totalPage"
                         direction-links
                 />
             </div>
         </div>
     </div>
+  <!--  弹窗  -->
+    <q-dialog v-model="prompt" persistent>
+        <q-card style="min-width: 350px">
+            <q-card-section>
+                <div class="text-h6">Your address</div>
+            </q-card-section>
+
+            <q-card-section class="q-pt-none">
+                <!--                <q-input dense v-model="address" autofocus @keyup.enter="prompt = false"/>-->
+            </q-card-section>
+
+            <q-card-actions align="right" class="text-primary">
+                <q-btn flat label="Cancel" v-close-popup/>
+                <q-btn flat label="Add address" v-close-popup/>
+            </q-card-actions>
+        </q-card>
+    </q-dialog>
 </template>
 <script setup lang="ts">
 import {api} from 'src/boot/axios';
 import {ref} from 'vue';
-import getTotalPage from "components/utils";
+
+//测试
 
 
 //加载表格
@@ -87,10 +105,8 @@ const columns: any = [
     {name: 'enable', align: 'center', label: '账号状态', 'field': 'enable'},
     {name: 'handle', align: 'center', label: '操作', 'field': 'handle'},
 ]
-const currentPage = ref(1)
-const pageSize = ref(20)
-const total = ref(100)
-const totalPage = ref(getTotalPage(pageSize.value, total.value))
+// const page = ref(new PageEntity(1, 20, 1, 1))
+const page = {}
 
 //搜索
 const searchName = ref('')
