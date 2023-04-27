@@ -49,6 +49,7 @@
                 <q-pagination
                         v-model="page.currentPage"
                         :max="page.totalPage"
+                        @update:model-value="loadPage"
                         direction-links
                 />
             </div>
@@ -63,8 +64,6 @@ import {CommonLoading, CommonSuccess, LoadingFinish} from "components/commonResu
 import {useQuasar} from "quasar";
 
 const $q = useQuasar()
-
-
 //分页管理
 const studentColumns: any = [
     {name: 'studentId', align: 'center', label: '学生id', 'field': 'studentId'},
@@ -83,7 +82,7 @@ const studentColumns: any = [
 ]
 const page = ref(new Page(1, 20, 21,))
 
-//加载页面
+//加载表格
 const studentList = ref([])
 const selected = ref([])
 loadPage()
@@ -101,6 +100,7 @@ function loadPage() {
     })
 }
 
+//刷新表格
 function refresh() {
     loadPage()
     CommonSuccess('刷新完成')
