@@ -1,1 +1,5 @@
 /* app global css */
+.dialog-width {
+    min-width: 400px;
+    width: 20vw;
+}

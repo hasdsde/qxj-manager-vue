@@ -29,6 +29,7 @@ export function CommonSuccess(msg: string) {
     })
 }
 
+
 export function Success() {
     Notify.create({
         type: 'positive',
