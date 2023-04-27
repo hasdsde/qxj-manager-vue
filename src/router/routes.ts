@@ -15,6 +15,9 @@ const routes: RouteRecordRaw[] = [
   // Always leave this as last one,
   // but you can also remove it
   {
+    path: '/login', component: () => import('layouts/Login.vue')
+  },
+  {
     path: '/:catchAll(.*)*',
     component: () => import('pages/ErrorNotFound.vue'),
   },
@@ -28,5 +31,4 @@ menu.value.forEach((element: any) => {
     })
   });
 });
-console.log(routes)
 export default routes;

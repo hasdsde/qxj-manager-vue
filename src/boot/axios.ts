@@ -1,5 +1,6 @@
 import { boot } from 'quasar/wrappers';
 import axios, { AxiosInstance } from 'axios';
+import { CommonFail } from 'src/components/commonResults';
 
 declare module '@vue/runtime-core' {
   interface ComponentCustomProperties {
@@ -13,7 +14,7 @@ declare module '@vue/runtime-core' {
 // good idea to move this instance creation inside of the
 // "export default () => {}" function below (which runs individually
 // for each client)
-const api = axios.create({ baseURL: 'https://api.example.com' });
+const api = axios.create({ baseURL: 'http://localhost:8080' });
 
 export default boot(({ app }) => {
   // for use inside Vue files (Options API) through this.$axios and this.$api
@@ -25,6 +26,19 @@ export default boot(({ app }) => {
   app.config.globalProperties.$api = api;
   // ^ ^ ^ this will allow you to use this.$api (for Vue Options API form)
   //       so you can easily perform requests against your app's API
+
+
+  api.interceptors.response.use(res => {
+    if (res.data.code === "401") {
+      CommonFail("当前账号已失效，请与管理员联系")
+    } else if (res.data.code != "200") {
+      CommonFail("错误:" + res.data.code + " " + res.data.msg)
+    }
+    // 不要返回res.data不然会抛出错误
+    return res.data
+  }, err => {
+    console.log(err.message);
+  });
 });
 
 export { api };

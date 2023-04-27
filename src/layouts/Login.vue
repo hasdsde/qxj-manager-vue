@@ -46,9 +46,8 @@
 // import BackgroundImg from "../components/BackgroundImg"
 import { ref } from 'vue'
 import { api } from '../boot/axios'
-import { CommFail, CommSuccess } from '../components/common'
+import { CommonFail, CommonSuccess } from '../components/commonResults'
 import { useRouter } from 'vue-router'
-import { changeRoute } from '../components/DynamicRouting';
 
 
 const $router = useRouter()
@@ -67,9 +66,6 @@ const conformR = ref()
 const registerR = ref(false)
 const first = ref('注册')
 const second = ref('登录')
-
-const userId = ref(1);
-const role = ref([])
 
 
 // 登录和注册切换
@@ -105,11 +101,11 @@ function register() {
     'password': passwordR.value
   }).then(res => {
     if (res.data.code === '200') {
-      CommSuccess('注册成功')
+      CommonSuccess('注册成功')
       login()
       clearAll()
     } else
-      CommFail('注册失败')
+      CommonFail('注册失败')
   })
 }
 
@@ -123,32 +119,16 @@ async function login() {
   }).then(res => {
 
     if (res.data.code === '200') {
-      const user = res.data.data.user;
       localStorage.setItem('username', usernameR.value)
       localStorage.setItem('nickname', res.data.data.user.nickname)
       localStorage.setItem('userId', user.id)
       localStorage.setItem('jwt_token', res.data.data.token)
-      changeRoute()
-      //角色分配（暂时用）
-      role.value = res.data.data.roleList
 
-      // 正确去重
-      role.value = role.value.filter((item, index, self) =>
-        index === self.findIndex(r => (
-          r.id === item.id && r.roleName === item.roleName
-        ))
-      );
-
-      // 分配角色和菜单
-      for (let i = 0; i < role.value.length; i++) {
-        localStorage.setItem(role.value[i].roleName, role.value[i].roleName)
-      }
-
-      CommSuccess('登录成功')
+      CommonSuccess('登录成功')
       $router.push('/')
 
     } else {
-      CommFail('登录失败')
+      CommonFail('登录失败')
     }
   })
 }
@@ -169,7 +149,7 @@ function regRule() {
 
 <style scoped>
 .main {
-  background-image: url('../assets/02.png');
+  background-image: url('../assets/kiminame.png');
   background-size: auto 100%;
 }
 </style>
