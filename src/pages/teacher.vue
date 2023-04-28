@@ -68,7 +68,7 @@
 import {api} from 'src/boot/axios';
 import {ref} from 'vue';
 import {Page} from "components/entity";
-import {CommonLoading, CommonSuccess, LoadingFinish} from "components/commonResults";
+import {CommonLoading, CommonSuccess, CommonWarn, LoadingFinish} from "components/commonResults";
 import {useQuasar} from "quasar";
 import AddDialog from "components/AddDialog.vue";
 import {teacherColumns} from "components/columns";
@@ -121,14 +121,18 @@ function resetSearch() {
 
 //新增用户
 const addDialog = ref(false)
-const info = ref({title: '新增用户'})
+const info = ref({title: '新增教师'})
 // const data = ref('aaa')
 
 //删除用户
 function handleDelete() {
+    if (selected.value.length == 0) {
+        CommonWarn('请选择数据');
+        return
+    }
     $q.dialog({
-        title: '删除用户',
-        message: '你确定要删除吗?',
+        title: '删除',
+        message: '你确定要删除' + selected.value.length + '条数据吗?',
         cancel: true
     }).onOk(() => {
         selected.value.forEach((item: any) => {

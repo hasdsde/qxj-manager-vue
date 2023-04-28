@@ -3,15 +3,17 @@
         <!--按钮-->
         <div class="col q-mb-md">
             <div class="row justify-between">
-                <div class="col">
+                <div class="col-5">
                     <q-btn color="primary" class="q-mr-md" label="刷新" icon="refresh" @click="loadPage"/>
-                    <q-btn color="secondary" class="q-mr-md" label="新增" icon="add"/>
-                    <q-btn color="red" class="q-mr-md" label="删除" icon="delete"/>
+                    <q-btn color="secondary" class="q-mr-md" label="新增" icon="add" @click="addDialog=true"/>
+                    <q-btn color="red" class="q-mr-md" label="删除" icon="delete" @click="handleDelete"/>
                 </div>
                 <div class="col text-right">
                     <q-input filled dense v-model="searchName" label="姓名" class="inline-block q-mr-sm"/>
                     <q-input filled dense v-model="searchNumber" label="学号" class="inline-block q-mr-sm"/>
                     <q-input filled dense v-model="searchClass" label="专业班级" class="inline-block q-mr-sm"/>
+                    <q-btn color="red" class="inline vertical-top q-mr-sm" label="重置" icon="restart_alt"
+                           @click="resetSearch"/>
                     <q-btn color="primary" class="inline vertical-top" label="搜索" icon="search"/>
                 </div>
             </div>
@@ -34,13 +36,14 @@
                 </template>
                 <template v-slot:body-cell-enable="props">
                     <q-td :props="props">
-                        <q-badge :color="props.row.enable==1?'primary':'red'"
-                                 :label="props.row.enable==1?'可用':'不可用'"/>
+                        <q-badge v-if="props.row.enable==0" color="purple" label="待审核"/>
+                        <q-badge v-if="props.row.enable==1" color="primary" label="通过"/>
+                        <q-badge v-if="props.row.enable==-1" color="primary" label="已拒绝"/>
                     </q-td>
                 </template>
                 <template v-slot:body-cell-handle="props">
                     <q-td :props="props">
-                        <q-btn label="编辑" color="primary" size="sm"/>
+                        <q-btn label="处理" color="primary" size="sm"/>
                     </q-td>
                 </template>
             </q-table>
@@ -53,54 +56,76 @@
             </div>
         </div>
     </div>
-  <!--  弹窗  -->
-    <q-dialog v-model="prompt" persistent>
-        <q-card style="min-width: 350px">
-            <q-card-section>
-                <div class="text-h6">Your address</div>
-            </q-card-section>
-
-            <q-card-section class="q-pt-none">
-                <!--                <q-input dense v-model="address" autofocus @keyup.enter="prompt = false"/>-->
-            </q-card-section>
-
-            <q-card-actions align="right" class="text-primary">
-                <q-btn flat label="Cancel" v-close-popup/>
-                <q-btn flat label="Add address" v-close-popup/>
-            </q-card-actions>
-        </q-card>
+  <!--    新增窗口    -->
+    <q-dialog v-model="addDialog" position="right" full-height>
+        <AddDialog :info="info" :column="studentColumns"/>
     </q-dialog>
 </template>
 <script setup lang="ts">
 import {api} from 'src/boot/axios';
 import {ref} from 'vue';
-import {registerColumns} from "components/columns";
+import {registerColumns, studentColumns} from "components/columns";
 import {Page} from "components/entity";
+import AddDialog from "components/AddDialog.vue";
+import {useQuasar} from "quasar";
+import {CommonSuccess, CommonWarn} from "components/commonResults";
 
-//测试
-
+const $q = useQuasar()
 
 //加载表格
+const page = ref(new Page(1, 20, 1))
 const studentList = ref([])
 const selected = ref([])
+const searchName = ref('')
+const searchNumber = ref('')
+const searchClass = ref([])
 loadPage()
 
 function loadPage() {
     api.post("/admin/registry/select?pageSize=10&currentPage=1", {
         "id": 1,
         "role": 1
-    }).then(res => {
-        console.log(res.data)
+    }).then((res: any) => {
+        page.value.total = res.total
         studentList.value = res.data
     })
 }
 
+//刷新表格
+function refresh() {
+    loadPage()
+    CommonSuccess('刷新完成')
+}
 
-const page = ref(new Page(1, 20, 1, 1))
-// const page = {}
+//重置
+function resetSearch() {
+    searchName.value = ''
+    searchNumber.value = ''
+    searchClass.value = []
+    page.value.currentPage = 1
+    loadPage()
+}
 
-//搜索
-const searchName = ref('')
-const searchNumber = ref('')
-const searchClass = ref([])
+
+//新增
+const addDialog = ref(false)
+const info = ref({title: '新增数据'})
+
+//删除
+function handleDelete() {
+    if (selected.value.length == 0) {
+        CommonWarn('请选择数据');
+        return
+    }
+    $q.dialog({
+        title: '删除',
+        message: '你确定要删除' + selected.value.length + '条数据吗?',
+        cancel: true
+    }).onOk(() => {
+        selected.value.forEach((item: any) => {
+            console.log(item.studentId)
+        })
+        loadPage()
+    })
+}
 </script>
