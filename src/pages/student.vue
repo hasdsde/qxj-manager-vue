@@ -3,7 +3,7 @@
         <!--按钮-->
         <div class="col q-mb-md">
             <div class="row justify-between">
-                <div class="col">
+                <div class="col-5">
                     <q-btn color="primary" class="q-mr-md" label="刷新" icon="refresh"
                            @click="refresh"/>
                     <q-btn color="secondary" class="q-mr-md" label="新增" icon="add" @click="addDialog=true"/>
@@ -109,8 +109,9 @@ function loadPage() {
             'number': searchNumber.value,
             'classId': searchClass.value
         }
-    }).then(res => {
+    }).then((res: any) => {
         studentList.value = res.data
+        page.value.total = res.total
         LoadingFinish($q)
     })
 }

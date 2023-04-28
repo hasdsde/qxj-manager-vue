@@ -4,7 +4,7 @@
         <!--按钮-->
         <div class="col q-mb-md">
             <div class="row justify-between">
-                <div class="col">
+                <div class="col-5">
                     <q-btn color="primary" class="q-mr-md" label="刷新" icon="refresh"
                            @click="refresh"/>
                     <q-btn color="secondary" class="q-mr-md" label="新增" icon="add" @click="addDialog=true"/>
@@ -83,7 +83,7 @@ const teacherColumns: any = [
     {name: 'enable', align: 'center', label: '账号状态', 'field': 'enable', 'type': 'bool'},
     {name: 'handle', align: 'center', label: '操作', 'field': 'handle'},
 ]
-const page = ref(new Page(1, 20, 21,))
+const page = ref(new Page(1, 20, 1,))
 
 //加载表格
 const studentList = ref([])
@@ -104,8 +104,9 @@ function loadPage() {
             'number': searchNumber.value,
             'classId': searchClass.value
         }
-    }).then(res => {
+    }).then((res: any) => {
         studentList.value = res.data
+        page.value.total = res.total
         LoadingFinish($q)
     })
 }
