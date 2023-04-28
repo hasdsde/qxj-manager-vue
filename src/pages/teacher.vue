@@ -71,18 +71,11 @@ import {Page} from "components/entity";
 import {CommonLoading, CommonSuccess, LoadingFinish} from "components/commonResults";
 import {useQuasar} from "quasar";
 import AddDialog from "components/AddDialog.vue";
+import {teacherColumns} from "components/columns";
 
 const $q = useQuasar()
 //分页管理
-const teacherColumns: any = [
-    {name: 'id', align: 'center', label: 'id', 'field': 'id', 'type': 'input'},
-    {name: 'name', align: 'center', label: '姓名', 'field': 'name', 'type': 'input'},
-    {name: 'number', align: 'center', label: '工号', 'field': 'number', 'type': 'number'},
-    {name: 'collegeId', align: 'center', label: '学院', 'field': 'collegeId', 'type': 'number'},
-    {name: 'role', align: 'center', label: '角色', 'field': 'role', 'type': 'number'},
-    {name: 'enable', align: 'center', label: '账号状态', 'field': 'enable', 'type': 'bool'},
-    {name: 'handle', align: 'center', label: '操作', 'field': 'handle'},
-]
+
 const page = ref(new Page(1, 20, 1,))
 
 //加载表格

@@ -20,7 +20,7 @@
         <div>
             <q-table title="注册信息管理"
                      :rows="studentList"
-                     :columns="columns"
+                     :columns="registerColumns"
                      row-key="name"
                      :pagination="{rowsNumber:page.pageSize}"
                      selection="multiple"
@@ -74,6 +74,8 @@
 <script setup lang="ts">
 import {api} from 'src/boot/axios';
 import {ref} from 'vue';
+import {registerColumns} from "components/columns";
+import {Page} from "components/entity";
 
 //测试
 
@@ -84,29 +86,18 @@ const selected = ref([])
 loadPage()
 
 function loadPage() {
-    api.get("/admin/registry/select?pageSize=1&currentPage=10").then(res => {
+    api.post("/admin/registry/select?pageSize=10&currentPage=1", {
+        "id": 1,
+        "role": 1
+    }).then(res => {
+        console.log(res.data)
         studentList.value = res.data
     })
 }
 
-//分页管理
-const columns: any = [
-    {name: 'studentId', align: 'center', label: '学生id', 'field': 'studentId'},
-    {name: 'name', align: 'center', label: '姓名', 'field': 'name'},
-    {name: 'number', align: 'center', label: '学号', 'field': 'number'},
-    {name: 'className', align: 'center', label: '班级', 'field': 'className'},
-    {name: 'major', align: 'center', label: '专业', 'field': 'major'},
-    {name: 'grade', align: 'center', label: '年级', 'field': 'grade'},
-    {name: 'college', align: 'center', label: '学院', 'field': 'college'},
-    {name: 'phone', align: 'center', label: '电话', 'field': 'phone'},
-    {name: 'emergencyPhone', align: 'center', label: '紧急电话', 'field': 'emergencyPhone'},
-    {name: 'createTime', align: 'center', label: '创建时间', 'field': 'createTime'},
-    {name: 'status', align: 'center', label: '学生状态', 'field': 'status'},
-    {name: 'enable', align: 'center', label: '账号状态', 'field': 'enable'},
-    {name: 'handle', align: 'center', label: '操作', 'field': 'handle'},
-]
-// const page = ref(new PageEntity(1, 20, 1, 1))
-const page = {}
+
+const page = ref(new Page(1, 20, 1, 1))
+// const page = {}
 
 //搜索
 const searchName = ref('')
