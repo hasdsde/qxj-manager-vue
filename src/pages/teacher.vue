@@ -7,7 +7,7 @@
                 <div class="col-5">
                     <q-btn color="primary" class="q-mr-md" label="刷新" icon="refresh"
                            @click="refresh"/>
-                    <q-btn color="secondary" class="q-mr-md" label="新增" icon="add" @click="addDialog=true"/>
+                    <q-btn color="secondary" class="q-mr-md" label="新增" icon="add" @click="handleNew"/>
                     <q-btn color="red" class="q-mr-md" label="删除" icon="delete" @click="handleDelete"/>
                 </div>
                 <div class="col text-right">
@@ -44,7 +44,7 @@
                 </template>
                 <template v-slot:body-cell-handle="props">
                     <q-td :props="props">
-                        <q-btn label="编辑" color="primary" size="sm"/>
+                        <q-btn label="编辑" color="primary" size="sm" @click="handleUpdate(props.rows)"/>
                     </q-td>
                 </template>
             </q-table>
@@ -119,10 +119,23 @@ function resetSearch() {
     loadPage()
 }
 
-//新增用户
 const addDialog = ref(false)
-const info = ref({title: '新增教师'})
-// const data = ref('aaa')
+const info = ref({title: '', mode: ''})
+
+//新增
+function handleNew() {
+    addDialog.value = true;
+    info.value.title = '新增'
+    info.value.mode = 'new'
+}
+
+
+//修改
+function handleUpdate() {
+    addDialog.value = true;
+    info.value.title = '修改'
+    info.value.mode = 'new'
+}
 
 //删除用户
 function handleDelete() {

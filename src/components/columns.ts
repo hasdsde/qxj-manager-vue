@@ -1,6 +1,6 @@
 //学生列表
 export const registerColumns: any = [
-    {name: 'id', align: 'center', label: '学生id', 'field': 'id'},
+    {name: 'id', align: 'center', label: '学生id', 'field': 'primary-key'},
     {name: 'name', align: 'center', label: '姓名', 'field': 'name'},
     {name: 'number', align: 'center', label: '学号', 'field': 'number'},
     {name: 'classId', align: 'center', label: '班级id', 'field': 'classId'},
@@ -12,7 +12,7 @@ export const registerColumns: any = [
     {name: 'handle', align: 'center', label: '操作', 'field': 'handle'},
 ]
 export const studentColumns: any = [
-    {name: 'studentId', align: 'center', label: '学生id', 'field': 'studentId', 'type': 'input'},
+    {name: 'studentId', align: 'center', label: '学生id', 'field': 'studentId', 'type': 'primary-key'},
     {name: 'name', align: 'center', label: '姓名', 'field': 'name', 'type': 'input'},
     {name: 'number', align: 'center', label: '学号', 'field': 'number', 'type': 'number'},
     {name: 'className', align: 'center', label: '班级', 'field': 'className', 'type': 'other'},
@@ -27,7 +27,7 @@ export const studentColumns: any = [
     {name: 'handle', align: 'center', label: '操作', 'field': 'handle'},
 ]
 export const teacherColumns: any = [
-    {name: 'id', align: 'center', label: 'id', 'field': 'id', 'type': 'input'},
+    {name: 'id', align: 'center', label: 'id', 'field': 'id', 'type': 'primary-key'},
     {name: 'name', align: 'center', label: '姓名', 'field': 'name', 'type': 'input'},
     {name: 'number', align: 'center', label: '工号', 'field': 'number', 'type': 'number'},
     {name: 'collegeId', align: 'center', label: '学院', 'field': 'collegeId', 'type': 'number'},

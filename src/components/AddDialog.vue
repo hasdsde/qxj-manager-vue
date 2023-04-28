@@ -5,6 +5,9 @@
         </q-card-section>
 
         <div v-for="item in column">
+            <q-card-section class="q-pa-md" v-if="item.type=='primary-key'">
+                <q-input v-model="item.value" :label="item.label" readonly/>
+            </q-card-section>
             <q-card-section class="q-pa-md" v-if="item.type=='input'">
                 <q-input v-model="item.value" :label="item.label"/>
             </q-card-section>

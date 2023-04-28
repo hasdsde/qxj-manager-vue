@@ -5,7 +5,7 @@
             <div class="row justify-between">
                 <div class="col-5">
                     <q-btn color="primary" class="q-mr-md" label="刷新" icon="refresh" @click="loadPage"/>
-                    <q-btn color="secondary" class="q-mr-md" label="新增" icon="add" @click="addDialog=true"/>
+                    <q-btn color="secondary" class="q-mr-md" label="新增" icon="add" @click="handleNew"/>
                     <q-btn color="red" class="q-mr-md" label="删除" icon="delete" @click="handleDelete"/>
                 </div>
                 <div class="col text-right">
@@ -14,7 +14,7 @@
                     <q-input filled dense v-model="searchClass" label="专业班级" class="inline-block q-mr-sm"/>
                     <q-btn color="red" class="inline vertical-top q-mr-sm" label="重置" icon="restart_alt"
                            @click="resetSearch"/>
-                    <q-btn color="primary" class="inline vertical-top" label="搜索" icon="search"/>
+                    <q-btn color="primary" class="inline vertical-top" label="搜索" icon="search" @click="loadPage"/>
                 </div>
             </div>
         </div>
@@ -43,7 +43,7 @@
                 </template>
                 <template v-slot:body-cell-handle="props">
                     <q-td :props="props">
-                        <q-btn label="处理" color="primary" size="sm"/>
+                        <q-btn label="处理" color="primary" size="sm" @click="handleUpdate(props.rows)"/>
                     </q-td>
                 </template>
             </q-table>
@@ -68,7 +68,7 @@ import {registerColumns, studentColumns} from "components/columns";
 import {Page} from "components/entity";
 import AddDialog from "components/AddDialog.vue";
 import {useQuasar} from "quasar";
-import {CommonSuccess, CommonWarn} from "components/commonResults";
+import {CommonLoading, CommonSuccess, CommonWarn, LoadingFinish} from "components/commonResults";
 
 const $q = useQuasar()
 
@@ -82,12 +82,23 @@ const searchClass = ref([])
 loadPage()
 
 function loadPage() {
-    api.post("/admin/registry/select?pageSize=10&currentPage=1", {
-        "id": 1,
-        "role": 1
-    }).then((res: any) => {
-        page.value.total = res.total
+    CommonLoading($q)
+    api.post("/admin/registry/select",
+        {
+            "id": 1,
+            "role": 1
+        }, {
+            params: {
+                'currentPage': page.value.currentPage,
+                'pageSize': page.value.pageSize,
+                'name': searchName.value,
+                'number': searchNumber.value,
+                'classId': searchClass.value,
+            }
+        }).then((res: any) => {
         studentList.value = res.data
+        page.value.total = res.total
+        LoadingFinish($q)
     })
 }
 
@@ -107,9 +118,23 @@ function resetSearch() {
 }
 
 
-//新增
 const addDialog = ref(false)
-const info = ref({title: '新增数据'})
+const info = ref({title: '', mode: ''})
+
+//新增
+function handleNew() {
+    addDialog.value = true;
+    info.value.title = '新增'
+    info.value.mode = 'new'
+}
+
+
+//修改
+function handleUpdate() {
+    addDialog.value = true;
+    info.value.title = '修改'
+    info.value.mode = 'new'
+}
 
 //删除
 function handleDelete() {
