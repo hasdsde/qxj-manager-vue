@@ -1,6 +1,6 @@
 //学生列表
 export const registerColumns: any = [
-    {name: 'id', align: 'center', label: '学生id', 'field': 'primary-key'},
+    {name: 'id', align: 'center', label: '学生id', 'field': 'id', 'type': 'primary-key'},
     {name: 'name', align: 'center', label: '姓名', 'field': 'name'},
     {name: 'number', align: 'center', label: '学号', 'field': 'number'},
     {name: 'classId', align: 'center', label: '班级id', 'field': 'classId'},

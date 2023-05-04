@@ -43,7 +43,22 @@
                 </template>
                 <template v-slot:body-cell-handle="props">
                     <q-td :props="props">
-                        <q-btn label="处理" color="primary" size="sm" @click="handleUpdate(props.rows)"/>
+                        <q-btn-dropdown label="处理" color="primary" :disable="props.row.enable!=0" size="sm"
+                                        @click="handleCheck(props.rows)">
+                            <q-list>
+                                <q-item clickable v-close-popup @click="accept = true">
+                                    <q-item-section>
+                                        <q-item-label>通过</q-item-label>
+                                    </q-item-section>
+                                </q-item>
+
+                                <q-item clickable v-close-popup @click="accept = false">
+                                    <q-item-section>
+                                        <q-item-label>拒绝</q-item-label>
+                                    </q-item-section>
+                                </q-item>
+                            </q-list>
+                        </q-btn-dropdown>
                     </q-td>
                 </template>
             </q-table>
@@ -152,5 +167,12 @@ function handleDelete() {
         })
         loadPage()
     })
+}
+
+//处理
+const accept = ref(false)
+
+function handleCheck(value: any) {
+
 }
 </script>
