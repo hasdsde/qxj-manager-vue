@@ -121,8 +121,9 @@ function resetSearch() {
 //弹窗
 const addDialog = ref(false)
 const info = ref({title: '', mode: '', link: '', update: ''})
-let dialogColumns: any = ref([]) //对studentColumns进行二次修改
-let times = 0 //这只能怪罪于quasar了
+let times = 0
+//对studentColumns进行二次修改
+let dialogColumns: any = ref([])
 studentColumns.forEach((item: any) => {
     dialogColumns.value.push(item)
 })
@@ -133,15 +134,16 @@ function handleNew() {
     info.value.title = '新增'
     info.value.mode = 'new'
     info.value.link = '/admin/user'
+    //添加密码列，自带的方法不能用啊
     if (times == 0) {
-        //添加密码列，自带的方法不能用啊
+        times = times + 1
         dialogColumns.value.push({
             name: 'password',
             align: 'center',
             label: '密码',
             type: 'number',
             new: true
-        })
+        });
         dialogColumns.value.push({
             name: 'class_id',
             align: 'center',
@@ -149,8 +151,8 @@ function handleNew() {
             type: 'class_id',
             new: true
         })
-        times = times + 1
     }
+
 }
 
 

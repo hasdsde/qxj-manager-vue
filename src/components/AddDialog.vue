@@ -53,18 +53,16 @@ const props = defineProps(['info', 'column'])
 const column = ref(props.column)
 const info = ref(props.info)
 
+// 重置
 function handleReset() {
     column.value.forEach((item: any) => {
         item.value = null;
     })
 }
 
+// 提交表单
 function handleSubmit() {
-
-    console.log(column.value)
     const params: any = {}
-
-
     if (info.value.mode == 'new') {
         column.value.forEach((item: any) => {
             console.log(item)
@@ -86,9 +84,11 @@ function handleSubmit() {
     // }
 }
 
+// 取消
 function handleCancel() {
     handleReset()
 }
+
 </script>
 
 

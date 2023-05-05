@@ -1,10 +1,14 @@
 <template>
-    <q-input bottom-slots v-model="class_id" label="选择班级" counter readonly
-             :rules="[ val => val && val.length > 0 || '班级不能为空']">
+    <q-field stack-label label="班级">
         <template v-slot:append>
             <q-btn round dense flat icon="add" @click="dialog=true"/>
         </template>
-    </q-input>
+        <template v-slot:control>
+            <div class="self-center full-width no-outline" tabindex="0" v-if="class_id!=null">
+                {{ college.name + '-' + grade.name + '-级' + major.name + classe.name }}
+            </div>
+        </template>
+    </q-field>
 
     <q-dialog v-model="dialog">
         <q-card style="width: 300px">
@@ -22,7 +26,7 @@
             </q-card-section>
 
             <q-card-actions align="right">
-                <q-btn flat label="确定" color="primary" v-close-popup/>
+                <q-btn flat label="确定" color="primary" v-close-popup @click="handleOK"/>
             </q-card-actions>
         </q-card>
     </q-dialog>
@@ -44,6 +48,15 @@ const major = ref()
 const classes = ref([])
 const classe = ref()
 getColleges()
+
+// 用不着了草
+// const emit = defineEmits(['func'])
+// emit('func', 'haha')
+
+// 向父级传值
+function handleOK() {
+    class_id.value = classe.value.id
+}
 
 function getColleges() {
     api.get('/class/college').then((res: any) => {
