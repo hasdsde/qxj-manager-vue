@@ -59,7 +59,7 @@
 
         <!--    新增窗口    -->
         <q-dialog v-model="addDialog" position="right" full-height persistent>
-            <AddDialog :info="info" :column="studentColumns"/>
+            <AddDialog :info="info" :column="dialogColumns"/>
         </q-dialog>
     </div>
 </template>
@@ -71,7 +71,6 @@ import {CommonLoading, CommonSuccess, CommonWarn, LoadingFinish} from "component
 import {useQuasar} from "quasar";
 import AddDialog from "components/AddDialog.vue";
 import {studentColumns} from "components/columns";
-import {rowsToObject} from "components/utils";
 
 const $q = useQuasar()
 //分页管理
@@ -124,6 +123,9 @@ const addDialog = ref(false)
 const info = ref({title: '', mode: '', link: '', update: ''})
 let dialogColumns: any = ref([]) //对studentColumns进行二次修改
 let times = 0 //这只能怪罪于quasar了
+studentColumns.forEach((item: any) => {
+    dialogColumns.value.push(item)
+})
 
 //新增
 function handleNew() {
@@ -131,7 +133,6 @@ function handleNew() {
     info.value.title = '新增'
     info.value.mode = 'new'
     info.value.link = '/admin/user'
-    dialogColumns.value = studentColumns
     if (times == 0) {
         //添加密码列，自带的方法不能用啊
         dialogColumns.value.push({
@@ -148,17 +149,14 @@ function handleNew() {
             type: 'class_id',
             new: true
         })
-        times++
+        times = times + 1
     }
 }
 
 
 //修改
 function handleUpdate(rows: any) {
-    //将既定的命运交给需要之人
-    dialogColumns.value = studentColumns.forEach((studentColumn: any) => {
-        studentColumn.value = rowsToObject(rows)[studentColumn.name]
-    })
+    //此乃，命运
     info.value.title = '修改'
     info.value.mode = 'update'
     info.value.link = '/admin/user'
