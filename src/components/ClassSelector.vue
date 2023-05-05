@@ -51,14 +51,16 @@ function getColleges() {
             item.label = item.name
         })
         colleges.value = res.data
-        console.log(colleges)
     })
 }
 
+// 修改学院时触发
 function onCollegeUpdate() {
-    console.log(college)
     getMajorId()
     getGradeId()
+    major.value = null
+    grade.value = null
+    classe.value = null
 }
 
 function getMajorId() {

@@ -123,6 +123,7 @@ function resetSearch() {
 const addDialog = ref(false)
 const info = ref({title: '', mode: '', link: '', update: ''})
 let dialogColumns: any = ref([]) //对studentColumns进行二次修改
+let times = 0 //这只能怪罪于quasar了
 
 //新增
 function handleNew() {
@@ -131,21 +132,24 @@ function handleNew() {
     info.value.mode = 'new'
     info.value.link = '/admin/user'
     dialogColumns.value = studentColumns
-    //添加密码列，自带的方法不能用啊
-    dialogColumns.value.push({
-        name: 'password',
-        align: 'center',
-        label: '密码',
-        type: 'number',
-        new: true
-    })
-    dialogColumns.value.push({
-        name: 'class_id',
-        align: 'center',
-        label: '班级id',
-        type: 'class_id',
-        new: true
-    })
+    if (times == 0) {
+        //添加密码列，自带的方法不能用啊
+        dialogColumns.value.push({
+            name: 'password',
+            align: 'center',
+            label: '密码',
+            type: 'number',
+            new: true
+        })
+        dialogColumns.value.push({
+            name: 'class_id',
+            align: 'center',
+            label: '班级id',
+            type: 'class_id',
+            new: true
+        })
+        times++
+    }
 }
 
 
