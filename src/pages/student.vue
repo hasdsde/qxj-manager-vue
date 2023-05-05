@@ -43,7 +43,7 @@
                 </template>
                 <template v-slot:body-cell-handle="props">
                     <q-td :props="props">
-                        <q-btn label="编辑" color="primary" size="sm" @click="handleUpdate(props.rows)"/>
+                        <q-btn label="编辑" color="primary" size="sm" @click="handleUpdate(props.row)"/>
                     </q-td>
                 </template>
             </q-table>
@@ -58,7 +58,7 @@
         </div>
 
         <!--    新增窗口    -->
-        <q-dialog v-model="addDialog" position="right" full-height>
+        <q-dialog v-model="addDialog" position="right" full-height persistent>
             <AddDialog :info="info" :column="studentColumns"/>
         </q-dialog>
     </div>
@@ -71,6 +71,7 @@ import {CommonLoading, CommonSuccess, CommonWarn, LoadingFinish} from "component
 import {useQuasar} from "quasar";
 import AddDialog from "components/AddDialog.vue";
 import {studentColumns} from "components/columns";
+import {rowsToObject} from "components/utils";
 
 const $q = useQuasar()
 //分页管理
@@ -120,22 +121,30 @@ function resetSearch() {
 
 
 const addDialog = ref(false)
-const info = ref({title: '', mode: ''})
+const info = ref({title: '', mode: '', link: '', update: ''})
+let dialogColumns = ref([])
 
 //新增
 function handleNew() {
     addDialog.value = true;
     info.value.title = '新增'
     info.value.mode = 'new'
+    info.value.link = '/admin/user'
+    dialogColumns.value = studentColumns
 }
 
 
 //修改
-function handleUpdate() {
-    addDialog.value = true;
+function handleUpdate(rows: any) {
+    //将既定的命运交给需要之人
+    dialogColumns.value = studentColumns.forEach((studentColumn: any) => {
+        studentColumn.value = rowsToObject(rows)[studentColumn.name]
+    })
     info.value.title = '修改'
-    info.value.mode = 'new'
+    info.value.mode = 'update'
+    addDialog.value = true;
 }
+
 
 //删除
 function handleDelete() {
