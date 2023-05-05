@@ -20,12 +20,16 @@
             </q-card-section>
             <!--      开关表单，值仅限为01      -->
             <q-card-section class="q-pa-md" v-if="item.type=='bool'">
-                {{ item.value }}
                 <q-toggle left-label :label="item.label" color="primary" :true-value="1" :false-value="0"
                           v-model="item.value"/>
             </q-card-section>
+            <!--      班级选择器      -->
+            <q-card-section class="q-pa-md" v-if="item.type=='class_id'">
+                <ClassSelector/>
+            </q-card-section>
         </div>
 
+        <!--    提交按钮    -->
         <q-card-section class="text-primary">
 
             <div class="row justify-between">
@@ -43,6 +47,7 @@
 
 <script lang="ts" setup>
 import {ref} from "vue";
+import ClassSelector from "components/ClassSelector.vue";
 
 const props = defineProps(['info', 'column'])
 const column = ref(props.column)
@@ -55,15 +60,34 @@ function handleReset() {
 }
 
 function handleSubmit() {
-    column.value.forEach((item: any) => {
-        console.log(item.value)
-    })
+
+    console.log(column.value)
+    const params: any = {}
+
+
+    if (info.value.mode == 'new') {
+        column.value.forEach((item: any) => {
+            console.log(item)
+            if (item.type != 'primary-key') {
+                if (item.new) {
+                    params[item.name] = item.value
+                }
+            }
+        })
+        console.log(params)
+        // api.post(info.value.link, column).then((res: any) => {
+        //     console.log(res)
+        // })
+    }
+    // if (info.value.mode == 'update') {
+    //     api.put(info.value.link, column).then((res: any) => {
+    //         console.log(res)
+    //     })
+    // }
 }
 
 function handleCancel() {
-    column.value.forEach((item: any) => {
-        console.log(item.value)
-    })
+    handleReset()
 }
 </script>
 
