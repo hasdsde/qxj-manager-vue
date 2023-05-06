@@ -59,7 +59,7 @@
 
         <!--    新增窗口    -->
         <q-dialog v-model="addDialog" position="right" full-height persistent>
-            <AddDialog :info="info" :column="dialogColumns" @loadPage="loadPageFresh"/>
+            <AddDialog :info="info" :column="dialogColumns"/>
         </q-dialog>
     </div>
 </template>
@@ -179,14 +179,16 @@ function handleDelete() {
     }).onOk(() => {
         selected.value.forEach((item: any) => {
             console.log(item.studentId)
+            api.delete('/admin/user?userId=' + item.studentId + '&enable=0').then((res: any) => {
+                if (res.code == '200') {
+                    CommonSuccess('操作成功')
+                    loadPage();
+                }
+            })
         })
         loadPage()
     })
 }
 
-//操作成功后刷新
-function loadPageFresh() {
-    console.log('触发')
-}
 
 </script>

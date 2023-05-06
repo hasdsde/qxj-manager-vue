@@ -50,13 +50,14 @@ import {ref} from "vue";
 import ClassSelector from "components/ClassSelector.vue";
 import {api} from "boot/axios";
 import {CommonSuccess} from "components/commonResults";
+import {useRouter} from "vue-router";
+
 
 const props = defineProps(['info', 'column'])
 const column = ref(props.column)
 const info = ref(props.info)
 const classId = ref('')
-//向父级发送
-const emit = defineEmits(['loadPage'])
+const rt = useRouter()
 
 // 重置
 function handleReset() {
@@ -71,11 +72,13 @@ function handleSubmit() {
     if (info.value.mode == 'new') {
         api.post(info.value.link, params).then((res: any) => {
             if (res.code == '200') {
+                //向父级发送
                 CommonSuccess('操作成功')
-                emit('loadPage', '')
+                rt.go(0)//这是真的绷不住
             }
         })
     }
+    handleReset()
 }
 
 //获取班级id
