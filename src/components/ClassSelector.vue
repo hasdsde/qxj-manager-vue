@@ -39,25 +39,31 @@ import {api} from "boot/axios";
 
 const class_id = ref()
 const dialog = ref(false)
+//学院
 const colleges = ref([])
 const college: any = ref()
+//年级
 const grades = ref([])
 const grade: any = ref([])
+//专业
 const majors = ref([])
 const major = ref()
+//班级
 const classes = ref([])
 const classe = ref()
 getColleges()
 
 // 用不着了草
-// const emit = defineEmits(['func'])
-// emit('func', 'haha')
+const emit = defineEmits(['func'])
+
 
 // 向父级传值
 function handleOK() {
     class_id.value = classe.value.id
+    emit('func', class_id.value)
 }
 
+//获取全部学院信息
 function getColleges() {
     api.get('/class/college').then((res: any) => {
         res.data.forEach((item: any) => {
@@ -104,7 +110,6 @@ function onClassUpdate() {
         res.data.forEach((item: any) => {
             item.label = item.name
         })
-        console.log(res.data)
         classes.value = res.data
     })
 }

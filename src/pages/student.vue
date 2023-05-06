@@ -59,7 +59,7 @@
 
         <!--    新增窗口    -->
         <q-dialog v-model="addDialog" position="right" full-height persistent>
-            <AddDialog :info="info" :column="dialogColumns"/>
+            <AddDialog :info="info" :column="dialogColumns" @loadPage="loadPageFresh"/>
         </q-dialog>
     </div>
 </template>
@@ -182,6 +182,11 @@ function handleDelete() {
         })
         loadPage()
     })
+}
+
+//操作成功后刷新
+function loadPageFresh() {
+    console.log('触发')
 }
 
 </script>
