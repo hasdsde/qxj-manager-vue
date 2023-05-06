@@ -12,18 +12,26 @@ export const registerColumns: any = [
     {name: 'handle', align: 'center', label: '操作', field: 'handle'},
 ]
 export const studentColumns: any = [
-    {name: 'studentId', align: 'center', label: '学生id', field: 'studentId', type: 'primary-key'},
-    {name: 'name', align: 'center', label: '姓名', field: 'name', type: 'input', new: true},
-    {name: 'number', align: 'center', label: '学号', field: 'number', type: 'number', new: true},
+    {name: 'id', align: 'center', label: '学生id', field: 'id', type: 'primary-key', update: true},
+    {name: 'name', align: 'center', label: '姓名', field: 'name', type: 'input', new: true, update: true},
+    {name: 'number', align: 'center', label: '学号', field: 'number', type: 'number', new: true, update: true},
     {name: 'className', align: 'center', label: '班级', field: 'className', type: 'other'},
     {name: 'major', align: 'center', label: '专业', field: 'major', new: false},
     {name: 'grade', align: 'center', label: '年级', field: 'grade', new: false},
     {name: 'college', align: 'center', label: '学院', field: 'college', new: false},
-    {name: 'phone', align: 'center', label: '电话', field: 'phone', type: 'number', new: true},
-    {name: 'emergencyPhone', align: 'center', label: '紧急电话', field: 'emergencyPhone', type: 'number', new: true},
+    {name: 'phone', align: 'center', label: '电话', field: 'phone', type: 'number', new: true, update: true},
     {name: 'createTime', align: 'center', label: '创建时间', field: 'createTime', new: false},
+    {
+        name: 'emergencyPhone',
+        align: 'center',
+        label: '紧急电话',
+        field: 'emergencyPhone',
+        type: 'number',
+        new: true,
+        update: true
+    },
     {name: 'status', align: 'center', label: '学生状态', field: 'status', type: 'bool', new: false},
-    {name: 'enable', align: 'center', label: '账号状态', field: 'enable', type: 'bool', new: true},
+    {name: 'enable', align: 'center', label: '账号状态', field: 'enable', type: 'bool', new: true, update: true},
     {name: 'handle', align: 'center', label: '操作', field: 'handle', new: false},
 ]
 export const teacherColumns: any = [

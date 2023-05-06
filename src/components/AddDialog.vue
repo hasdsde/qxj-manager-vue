@@ -74,7 +74,14 @@ function handleSubmit() {
             if (res.code == '200') {
                 //向父级发送
                 CommonSuccess('操作成功')
-                rt.go(0)//这是真的绷不住
+            }
+        })
+    }
+    if (info.value.mode == 'update') {
+        api.put(info.value.link, params).then((res: any) => {
+            if (res.code == '200') {
+                //向父级发送
+                CommonSuccess('操作成功')
             }
         })
     }
@@ -99,6 +106,20 @@ function handleParam() {
             }
         })
         params['classId'] = classId.value;
+    }
+    if (info.value.mode == 'update') {
+        console.log(column)
+        column.value.forEach((item: any) => {
+            if (item.update) {
+                params[item.name] = item.value
+            }
+        })
+        column.value.filter((item: any) => {
+            return item != null;
+        })
+        if (classId.value) {
+            params['classId'] = classId.value;
+        }
     }
     return params;
 }

@@ -58,7 +58,7 @@
         </div>
 
         <!--    新增窗口    -->
-        <q-dialog v-model="addDialog" position="right" full-height persistent>
+        <q-dialog v-model="addDialog" position="right" full-height persistent @hide="loadPage">
             <AddDialog :info="info" :column="dialogColumns"/>
         </q-dialog>
     </div>
@@ -158,11 +158,34 @@ function handleNew() {
 
 //修改
 function handleUpdate(rows: any) {
+    addDialog.value = true;
+    //将既定的命运交给需要之人
+    dialogColumns.value.forEach((dialogColumn: any) => {
+        dialogColumn.value = rows[dialogColumn.name]
+    })
+    console.log(dialogColumns)
     //此乃，命运
     info.value.title = '修改'
     info.value.mode = 'update'
     info.value.link = '/admin/user'
-    addDialog.value = true;
+
+    if (times == 0) {
+        times = times + 1
+        dialogColumns.value.push({
+            name: 'password',
+            align: 'center',
+            label: '密码',
+            type: 'number',
+            update: true
+        });
+        dialogColumns.value.push({
+            name: 'class_id',
+            align: 'center',
+            label: '班级id',
+            type: 'class_id',
+            update: true
+        })
+    }
 }
 
 
