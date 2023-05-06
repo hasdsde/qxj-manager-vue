@@ -5,13 +5,16 @@
             <div class="row justify-between">
                 <div class="col-5">
                     <q-btn color="primary" class="q-mr-md" label="刷新" icon="refresh" @click="loadPage"/>
-                    <q-btn color="secondary" class="q-mr-md" label="新增" icon="add" @click="handleNew"/>
-                    <q-btn color="red" class="q-mr-md" label="删除" icon="delete" @click="handleDelete"/>
+                    <!--                    <q-btn color="secondary" class="q-mr-md" label="新增" icon="add" @click="handleNew"/>-->
+                    <!--                    <q-btn color="red" class="q-mr-md" label="删除" icon="delete" @click="handleDelete"/>-->
                 </div>
                 <div class="col text-right">
-                    <q-input filled dense v-model="searchName" label="姓名" class="inline-block q-mr-sm"/>
-                    <q-input filled dense v-model="searchNumber" label="学号" class="inline-block q-mr-sm"/>
-                    <q-input filled dense v-model="searchClass" label="专业班级" class="inline-block q-mr-sm"/>
+                    <q-input filled dense v-model="searchName" label="姓名" class="inline-block q-mr-sm"
+                             @keydown.enter="loadPage"/>
+                    <q-input filled dense v-model="searchNumber" label="学号" class="inline-block q-mr-sm"
+                             @keydown.enter="loadPage"/>
+                    <!--                    <q-input filled dense v-model="searchClass" label="专业班级" class="inline-block q-mr-sm"-->
+                    <!--                             @keydown.enter="loadPage"/>-->
                     <q-btn color="red" class="inline vertical-top q-mr-sm" label="重置" icon="restart_alt"
                            @click="resetSearch"/>
                     <q-btn color="primary" class="inline vertical-top" label="搜索" icon="search" @click="loadPage"/>
@@ -36,25 +39,28 @@
                 </template>
                 <template v-slot:body-cell-enable="props">
                     <q-td :props="props">
+                        <!--* 审批中：0-->
+                        <!--* 可用：1-->
+                        <!--* 已删除：2-->
+                        <!--* 审批拒绝：-1-->
                         <q-badge v-if="props.row.enable==0" color="purple" label="待审核"/>
                         <q-badge v-if="props.row.enable==1" color="primary" label="通过"/>
-                        <q-badge v-if="props.row.enable==-1" color="primary" label="已拒绝"/>
+                        <q-badge v-if="props.row.enable==-1" color="red" label="已拒绝"/>
                     </q-td>
                 </template>
                 <template v-slot:body-cell-handle="props">
                     <q-td :props="props">
-                        <q-btn-dropdown label="处理" color="primary" :disable="props.row.enable!=0" size="sm"
-                                        @click="handleCheck(props.rows)">
+                        <q-btn-dropdown label="处理" color="primary" :disable="props.row.enable!=0" size="sm">
                             <q-list>
-                                <q-item clickable v-close-popup @click="accept = true">
+                                <q-item clickable v-close-popup>
                                     <q-item-section>
-                                        <q-item-label>通过</q-item-label>
+                                        <q-item-label @click="handleCheckAccept(props.row)">通过</q-item-label>
                                     </q-item-section>
                                 </q-item>
 
-                                <q-item clickable v-close-popup @click="accept = false">
+                                <q-item clickable v-close-popup>
                                     <q-item-section>
-                                        <q-item-label>拒绝</q-item-label>
+                                        <q-item-label @click="handleCheckReject(props.row)">拒绝</q-item-label>
                                     </q-item-section>
                                 </q-item>
                             </q-list>
@@ -83,7 +89,7 @@ import {registerColumns, studentColumns} from "components/columns";
 import {Page} from "components/entity";
 import AddDialog from "components/AddDialog.vue";
 import {useQuasar} from "quasar";
-import {CommonLoading, CommonSuccess, CommonWarn, LoadingFinish} from "components/commonResults";
+import {CommonLoading, CommonSuccess, CommonWarn, LoadingFinish, Success} from "components/commonResults";
 
 const $q = useQuasar()
 
@@ -169,9 +175,27 @@ function handleDelete() {
 }
 
 //处理
-const accept = ref(false)
 
-function handleCheck(value: any) {
 
+function handleCheckAccept(row: any) {
+    api.post("/admin/registry/audit/1", {
+        "id": row.id
+    }).then((res: any) => {
+        if (res.code == '200') {
+            Success()
+        }
+        loadPage()
+    })
+}
+
+function handleCheckReject(row: any) {
+    api.post("/admin/registry/audit/-1", {
+        "id": row.id
+    }).then((res: any) => {
+        if (res.code == '200') {
+            Success()
+        }
+        loadPage()
+    })
 }
 </script>

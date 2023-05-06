@@ -11,9 +11,12 @@
                     <q-btn color="red" class="q-mr-md" label="删除" icon="delete" @click="handleDelete"/>
                 </div>
                 <div class="col text-right">
-                    <q-input filled dense v-model="searchName" label="姓名" class="inline-block q-mr-sm"/>
-                    <q-input filled dense v-model="searchNumber" label="工号" class="inline-block q-mr-sm"/>
-                    <q-input filled dense v-model="searchCollege" label="学院" class="inline-block q-mr-sm"/>
+                    <q-input filled dense v-model="searchName" label="姓名" class="inline-block q-mr-sm"
+                             @keydown.enter="loadPage"/>
+                    <q-input filled dense v-model="searchNumber" label="工号" class="inline-block q-mr-sm"
+                             @keydown.enter="loadPage"/>
+                    <q-input filled dense v-model="searchCollege" label="学院" class="inline-block q-mr-sm"
+                             @keydown.enter="loadPage"/>
                     <q-btn color="red" class="inline vertical-top q-mr-sm" label="重置" icon="restart_alt"
                            @click="resetSearch"/>
                     <q-btn color="primary" class="inline vertical-top" label="搜索" icon="search" @click="loadPage"/>
