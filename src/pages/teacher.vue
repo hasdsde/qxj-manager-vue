@@ -13,7 +13,7 @@
                 <div class="col text-right">
                     <q-input filled dense v-model="searchName" label="姓名" class="inline-block q-mr-sm"/>
                     <q-input filled dense v-model="searchNumber" label="工号" class="inline-block q-mr-sm"/>
-                    <q-input filled dense v-model="searchClass" label="学院" class="inline-block q-mr-sm"/>
+                    <q-input filled dense v-model="searchCollege" label="学院" class="inline-block q-mr-sm"/>
                     <q-btn color="red" class="inline vertical-top q-mr-sm" label="重置" icon="restart_alt"
                            @click="resetSearch"/>
                     <q-btn color="primary" class="inline vertical-top" label="搜索" icon="search" @click="loadPage"/>
@@ -44,7 +44,7 @@
                 </template>
                 <template v-slot:body-cell-handle="props">
                     <q-td :props="props">
-                        <q-btn label="编辑" color="primary" size="sm" @click="handleUpdate(props.rows)"/>
+                        <q-btn label="编辑" color="primary" size="sm" @click="handleUpdate(props.row)"/>
                     </q-td>
                 </template>
             </q-table>
@@ -83,7 +83,7 @@ const studentList = ref([])
 const selected = ref([])
 const searchName = ref('')
 const searchNumber = ref('')
-const searchClass = ref([])
+const searchCollege = ref([])
 
 loadPage()
 
@@ -93,9 +93,9 @@ function loadPage() {
         params: {
             'currentPage': page.value.currentPage,
             'pageSize': page.value.pageSize,
-            'username': searchName.value,
+            'name': searchName.value,
             'number': searchNumber.value,
-            'classId': searchClass.value
+            'college': searchCollege.value
         }
     }).then((res: any) => {
         studentList.value = res.data
@@ -114,7 +114,7 @@ function refresh() {
 function resetSearch() {
     searchName.value = ''
     searchNumber.value = ''
-    searchClass.value = []
+    searchCollege.value = []
     page.value.currentPage = 1
     loadPage()
 }
@@ -142,17 +142,23 @@ function handleNew() {
             align: 'center',
             label: '密码',
             type: 'number',
-            new: true
+            new: true,
+            update: true
         });
     }
 }
 
 
 //修改
-function handleUpdate() {
+function handleUpdate(rows: any) {
+    console.log(dialogColumns)
     addDialog.value = true;
     info.value.title = '修改'
     info.value.mode = 'update'
+    //将既定的命运交给需要之人
+    dialogColumns.value.forEach((dialogColumn: any) => {
+        dialogColumn.value = rows[dialogColumn.name]
+    })
     if (times == 0) {
         times = times + 1
         dialogColumns.value.push({
@@ -160,7 +166,8 @@ function handleUpdate() {
             align: 'center',
             label: '密码',
             type: 'number',
-            new: true
+            new: true,
+            update: true
         });
     }
 }

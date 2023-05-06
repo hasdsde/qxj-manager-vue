@@ -35,11 +35,11 @@ export const studentColumns: any = [
     {name: 'handle', align: 'center', label: '操作', field: 'handle', new: false},
 ]
 export const teacherColumns: any = [
-    {name: 'id', align: 'center', label: 'id', field: 'id', type: 'primary-key'},
-    {name: 'name', align: 'center', label: '姓名', field: 'name', type: 'input', new: true,},
-    {name: 'number', align: 'center', label: '工号', field: 'number', type: 'number', new: true,},
-    {name: 'college', align: 'center', label: '学院', field: 'college', type: 'input', new: true,},
-    {name: 'role', align: 'center', label: '角色', field: 'role', type: 'number', new: true,},
-    {name: 'enable', align: 'center', label: '账号状态', field: 'enable', type: 'bool', new: true,},
+    {name: 'id', align: 'center', label: 'id', field: 'id', type: 'primary-key', update: true},
+    {name: 'name', align: 'center', label: '姓名', field: 'name', type: 'input', new: true, update: true},
+    {name: 'number', align: 'center', label: '工号', field: 'number', type: 'number', new: true, update: true},
+    {name: 'college', align: 'center', label: '学院', field: 'college', type: 'input', new: true, update: true},
+    {name: 'role', align: 'center', label: '角色', field: 'role', type: 'number', new: true, update: true},
+    {name: 'enable', align: 'center', label: '账号状态', field: 'enable', type: 'bool', new: true, update: true},
     {name: 'handle', align: 'center', label: '操作', field: 'handle'},
 ]

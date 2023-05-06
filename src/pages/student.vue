@@ -163,8 +163,6 @@ function handleUpdate(rows: any) {
     dialogColumns.value.forEach((dialogColumn: any) => {
         dialogColumn.value = rows[dialogColumn.name]
     })
-    console.log(dialogColumns)
-    //此乃，命运
     info.value.title = '修改'
     info.value.mode = 'update'
     info.value.link = '/admin/user'

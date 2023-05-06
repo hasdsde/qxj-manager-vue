@@ -99,7 +99,7 @@ function handleParam() {
     // 新增
     if (info.value.mode == 'new') {
         column.value.forEach((item: any) => {
-            if (item.type != 'primary-key') {
+            if (item.type != 'primary-key' && item.value != null && item.value != "") {
                 if (item.new) {
                     params[item.name] = item.value
                 }
@@ -110,9 +110,8 @@ function handleParam() {
         }
     }
     if (info.value.mode == 'update') {
-        console.log(column)
         column.value.forEach((item: any) => {
-            if (item.update) {
+            if (item.update && item.value != null && item.value != "") {
                 params[item.name] = item.value
             }
         })
