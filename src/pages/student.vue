@@ -94,7 +94,7 @@ function loadPage() {
             'pageSize': page.value.pageSize,
             'username': searchName.value,
             'number': searchNumber.value,
-            'classId': searchClass.value
+            'className': searchClass.value
         }
     }).then((res: any) => {
         studentList.value = res.data
