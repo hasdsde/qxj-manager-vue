@@ -12,7 +12,7 @@
                 </div>
                 <div class="col text-right">
                     <q-input filled dense v-model="searchName" label="姓名" class="inline-block q-mr-sm"/>
-                    <q-input filled dense v-model="searchNumber" label="学号" class="inline-block q-mr-sm"/>
+                    <q-input filled dense v-model="searchNumber" label="工号" class="inline-block q-mr-sm"/>
                     <q-input filled dense v-model="searchClass" label="学院" class="inline-block q-mr-sm"/>
                     <q-btn color="red" class="inline vertical-top q-mr-sm" label="重置" icon="restart_alt"
                            @click="resetSearch"/>
@@ -58,8 +58,8 @@
             </div>
         </div>
         <!--    新增窗口    -->
-        <q-dialog v-model="addDialog" position="right" full-height>
-            <AddDialog :info="info" :column="teacherColumns"/>
+        <q-dialog v-model="addDialog" position="right" full-height @hide="loadPage">
+            <AddDialog :info="info" :column="dialogColumns"/>
         </q-dialog>
     </div>
 </template>
@@ -120,13 +120,31 @@ function resetSearch() {
 }
 
 const addDialog = ref(false)
-const info = ref({title: '', mode: ''})
+const info = ref({title: '', mode: '', link: '', update: ''})
+info.value.link = '/admin'
+let times = 0
+//对studentColumns进行二次修改
+let dialogColumns: any = ref([])
+teacherColumns.forEach((item: any) => {
+    dialogColumns.value.push(item)
+})
 
 //新增
 function handleNew() {
     addDialog.value = true;
     info.value.title = '新增'
     info.value.mode = 'new'
+    //添加密码列，自带的方法不能用啊
+    if (times == 0) {
+        times = times + 1
+        dialogColumns.value.push({
+            name: 'password',
+            align: 'center',
+            label: '密码',
+            type: 'number',
+            new: true
+        });
+    }
 }
 
 
@@ -134,7 +152,17 @@ function handleNew() {
 function handleUpdate() {
     addDialog.value = true;
     info.value.title = '修改'
-    info.value.mode = 'new'
+    info.value.mode = 'update'
+    if (times == 0) {
+        times = times + 1
+        dialogColumns.value.push({
+            name: 'password',
+            align: 'center',
+            label: '密码',
+            type: 'number',
+            new: true
+        });
+    }
 }
 
 //删除用户
@@ -149,6 +177,13 @@ function handleDelete() {
         cancel: true
     }).onOk(() => {
         selected.value.forEach((item: any) => {
+            console.log(item)
+            api.delete('/admin?adminId=' + item.id + '&enable=0').then((res: any) => {
+                if (res.code == '200') {
+                    CommonSuccess('操作成功');
+                }
+                loadPage()
+            })
         })
         loadPage()
     })

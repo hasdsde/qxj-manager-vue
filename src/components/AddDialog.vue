@@ -105,7 +105,9 @@ function handleParam() {
                 }
             }
         })
-        params['classId'] = classId.value;
+        if (classId.value != "") {
+            params['classId'] = classId.value;
+        }
     }
     if (info.value.mode == 'update') {
         console.log(column)
@@ -117,7 +119,7 @@ function handleParam() {
         column.value.filter((item: any) => {
             return item != null;
         })
-        if (classId.value) {
+        if (classId.value != "") {
             params['classId'] = classId.value;
         }
     }

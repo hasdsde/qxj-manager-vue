@@ -36,10 +36,10 @@ export const studentColumns: any = [
 ]
 export const teacherColumns: any = [
     {name: 'id', align: 'center', label: 'id', field: 'id', type: 'primary-key'},
-    {name: 'name', align: 'center', label: '姓名', field: 'name', type: 'input'},
-    {name: 'number', align: 'center', label: '工号', field: 'number', type: 'number'},
-    {name: 'collegeId', align: 'center', label: '学院', field: 'collegeId', type: 'number'},
-    {name: 'role', align: 'center', label: '角色', field: 'role', type: 'number'},
-    {name: 'enable', align: 'center', label: '账号状态', field: 'enable', type: 'bool'},
+    {name: 'name', align: 'center', label: '姓名', field: 'name', type: 'input', new: true,},
+    {name: 'number', align: 'center', label: '工号', field: 'number', type: 'number', new: true,},
+    {name: 'college', align: 'center', label: '学院', field: 'college', type: 'input', new: true,},
+    {name: 'role', align: 'center', label: '角色', field: 'role', type: 'number', new: true,},
+    {name: 'enable', align: 'center', label: '账号状态', field: 'enable', type: 'bool', new: true,},
     {name: 'handle', align: 'center', label: '操作', field: 'handle'},
 ]
