@@ -163,7 +163,6 @@ function handleDelete() {
         cancel: true
     }).onOk(() => {
         selected.value.forEach((item: any) => {
-            console.log(item.studentId)
         })
         loadPage()
     })

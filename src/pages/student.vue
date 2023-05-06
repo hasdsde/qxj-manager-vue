@@ -201,8 +201,7 @@ function handleDelete() {
         cancel: true
     }).onOk(() => {
         selected.value.forEach((item: any) => {
-            console.log(item.studentId)
-            api.delete('/admin/user?userId=' + item.studentId + '&enable=0').then((res: any) => {
+            api.delete('/admin/user?userId=' + item.id + '&enable=0').then((res: any) => {
                 if (res.code == '200') {
                     CommonSuccess('操作成功')
                     loadPage();
