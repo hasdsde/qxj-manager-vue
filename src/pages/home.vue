@@ -1,26 +1,34 @@
 <template>
-    <div class="column" style="height: 90vh">
+    <div class="column">
+
         <div class="col">
-
-            <div class="row justify-around">
-                <HomePageCard title="今日请假人数" data="121" color="primary"/>
-                <HomePageCard title="今日注册申请数" data="324" color="secondary"/>
-                <HomePageCard title="学生总人数" data="123" color="accent"/>
-                <HomePageCard title="教师总人数" data="123" color="positive"/>
+            <div class="row q-ma-lg">
+                <div class="text-h3">欢迎,</div>
+                <div class="text-h3 text-primary"> {{ ' ' + userInfo.name + ' ' }}</div>
+                <div class="text-h3">登录控制台</div>
             </div>
-
         </div>
-        <div class="col">
 
-            <div class="row">
-                <div class="col">
-                    <div ref="chart1" style="width: 100%; height: 400px"></div>
+
+        <div class="col">
+            <div class="row justify-between q-ma-lg">
+                <HomePageCard title="今日请假人数" data="121" color="primary" link="/holiday"/>
+                <HomePageCard title="今日注册申请数" data="324" color="secondary" link="/register"/>
+                <HomePageCard title="学生总人数" data="123" color="accent" link="/student"/>
+                <HomePageCard title="教师总人数" data="123" color="positive" link="/teacher"/>
+            </div>
+        </div>
+
+        <div class="col q-mt-lg">
+            <div class="row  ">
+                <div class="col q-ma-md ">
+                    <div ref="chart1" style="width: 100%; height: 350px"></div>
                 </div>
-                <div class="col">
-                    <div ref="chart2" style="width: 100%; height: 400px"></div>
+                <div class="col q-ma-md">
+                    <div ref="chart2" style="width: 50%; height: 400px;display: inline-block"></div>
+                    <div ref="chart3" style="width: 50%; height: 400px;display: inline-block"></div>
                 </div>
             </div>
-
         </div>
     </div>
 </template>
@@ -30,6 +38,8 @@ import HomePageCard from "components/HomePageCard.vue";
 import {onMounted, ref} from "vue";
 import * as echarts from "echarts";
 
+
+const userInfo = ref()
 const chart1 = ref()
 const chart2 = ref()
 const chart3 = ref()
@@ -37,9 +47,15 @@ onMounted(
     () => {
         initChart1()
         initChart2()
+        initChart3()
 
     }
 )
+getUserInfo()
+
+function getUserInfo() {
+    userInfo.value = JSON.parse(localStorage.getItem('userInfo'))
+}
 
 function initChart1() {
     const myChart = echarts.init(chart1.value);
@@ -110,7 +126,7 @@ function initChart2() {
     const myChart = echarts.init(chart2.value);
     const option = {
         title: {
-            text: '请假人数占比',
+            text: '专业占比',
             subtext: '计算机学院',
             left: 'center'
         },
@@ -127,6 +143,41 @@ function initChart2() {
                     {value: 735, name: '软件工程'},
                     {value: 580, name: '物联网工程'},
                     {value: 484, name: '信息安全'},
+                ],
+                emphasis: {
+                    itemStyle: {
+                        shadowBlur: 10,
+                        shadowOffsetX: 0,
+                        shadowColor: 'rgba(0, 0, 0, 0.5)'
+                    }
+                }
+            }
+        ]
+    };
+    myChart.setOption(option);
+}
+
+function initChart3() {
+    const myChart = echarts.init(chart3.value);
+    const option = {
+        title: {
+            text: '年级占比',
+            subtext: '计算机学院',
+            left: 'center'
+        },
+        tooltip: {
+            trigger: 'item'
+        },
+        series: [
+            {
+                name: 'Access From',
+                type: 'pie',
+                radius: '50%',
+                data: [
+                    {value: 112, name: '20级'},
+                    {value: 233, name: '21级'},
+                    {value: 212, name: '22级'},
+                    {value: 14, name: '23级'},
                 ],
                 emphasis: {
                     itemStyle: {
