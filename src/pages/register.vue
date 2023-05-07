@@ -50,6 +50,8 @@
                 </template>
                 <template v-slot:body-cell-handle="props">
                     <q-td :props="props">
+                        <q-btn label="详情" size="sm" class="q-mr-sm" color="secondary"
+                               @click="handleDetails(props.row)"/>
                         <q-btn-dropdown label="处理" color="primary" :disable="props.row.enable!=0" size="sm">
                             <q-list>
                                 <q-item clickable v-close-popup>
@@ -80,6 +82,22 @@
   <!--    新增窗口    -->
     <q-dialog v-model="addDialog" position="right" full-height>
         <AddDialog :info="info" :column="studentColumns"/>
+    </q-dialog>
+    <q-dialog v-model="detailsDialog">
+        <q-card>
+            <q-card-section>
+                <q-table
+                        style="width: 80vw"
+                        title="注册详情"
+                        :rows="userDetails"
+                        :columns="studentColumns"
+                        row-key="name"
+                        :filter="filter"
+                        hide-pagination
+                />
+            </q-card-section>
+        </q-card>
+
     </q-dialog>
 </template>
 <script setup lang="ts">
@@ -197,5 +215,17 @@ function handleCheckReject(row: any) {
         }
         loadPage()
     })
+}
+
+const detailsDialog = ref(false)
+const userDetails: any = ref([])
+
+// 查看细节
+function handleDetails(row: any) {
+    api.post('/admin/registry/show', {id: row.id}).then((res: any) => {
+        userDetails.value = []
+        userDetails.value.push(res.data)
+    })
+    detailsDialog.value = true
 }
 </script>
