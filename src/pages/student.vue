@@ -78,7 +78,7 @@ import {studentColumns} from "components/columns";
 const $q = useQuasar()
 //分页管理
 
-const page = ref(new Page(1, 20, 21,))
+const page = ref(new Page(1, 10, 21,))
 
 //加载表格
 const studentList = ref([])
