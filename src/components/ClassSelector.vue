@@ -82,6 +82,7 @@ function onCollegeUpdate() {
     classe.value = null
 }
 
+//根据学院获取专业
 function getMajorId() {
     api.get('/class/major?collegeId=' + college.value.id).then((res: any) => {
         res.data.forEach((item: any) => {
@@ -91,6 +92,7 @@ function getMajorId() {
     })
 }
 
+//根据学院获取年级
 function getGradeId() {
     api.get('/class/grade?collegeId=' + college.value.id).then((res: any) => {
         res.data.forEach((item: any) => {
@@ -100,6 +102,7 @@ function getGradeId() {
     })
 }
 
+//根据专业和年级获取班级
 function onClassUpdate() {
     api.get('/class', {
         params: {

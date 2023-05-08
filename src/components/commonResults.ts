@@ -77,3 +77,7 @@ export function DialogAlert(message: string) {
         CommonWarn('此处应该有音频')
     })
 }
+
+export function building() {
+    CommonWarn("正在建设中")
+}

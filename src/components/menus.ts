@@ -17,6 +17,7 @@ export let menu = ref([
         icon: 'perm_identity', label: '人员管理', isopen: false, id: 2, children: [
             {link: 'student', icon: 'face', desc: '学生管理', id: 6},
             {link: 'teacher', icon: 'people_alt', desc: '教师管理', id: 7},
+            {link: 'class', icon: 'apps', desc: '班级管理', id: 13},
         ]
     },
     {

@@ -1,10 +1,10 @@
 <template>
     <div class="q-pa-md">
         <div class="q-mb-sm">
-            <q-btn color="primary" class="q-mr-md" label="刷新" icon="refresh"/>
-            <q-btn class="col q-mr-md" label="新建" color="secondary" icon="add"/>
-            <q-btn class="col q-mr-md" label="删除" color="red" icon="delete"/>
-            <q-btn class="col q-mr-md" label="全部保存" color="primary" icon="save"/>
+            <q-btn color="primary" class="q-mr-md" label="刷新" icon="refresh" @click="building()"/>
+            <q-btn class="col q-mr-md" label="新建" color="secondary" icon="add" @click="building()"/>
+            <q-btn class="col q-mr-md" label="删除" color="red" icon="delete" @click="building()"/>
+            <q-btn class="col q-mr-md" label="全部保存" color="primary" icon="save" @click="building()"/>
         </div>
         <q-card v-for="(col,index) in settingColumns" class="q-mt-lg ">
             <q-card-section>
@@ -12,7 +12,7 @@
                     <div class="text-h6 col">{{ index }}
                     </div>
                     <div>
-                        <q-btn class="col" label="保存" color="primary"/>
+                        <q-btn class="col" label="保存" color="primary" @click="building()"/>
                     </div>
                 </div>
 
@@ -53,6 +53,7 @@
 </template>
 <script setup>
 import {columns} from "components/columns";
+import {building} from "components/commonResults";
 
 const settingColumns = columns
 const items = [
