@@ -1,11 +1,30 @@
 import {toRaw} from "vue";
 import {exportFile, useQuasar} from "quasar";
+import {CommonFail} from "components/commonResults";
+import {useRouter} from "vue-router";
 
 const $q = useQuasar()
+const rt = useRouter()
 
 //将当前行数据转换为js对象
 export function rowsToObject(row: any): any {
     return toRaw(row)
+}
+
+//获取用户信息
+export function getUserInfo() {
+    if (localStorage.getItem("userInfo") == null) {
+        CommonFail('用户未登录')
+        rt.push('/Login')
+    } else {
+        //@ts-ignore
+        return JSON.parse(localStorage.getItem("userInfo").toString())
+    }
+}
+
+//判断是不是全是空的
+export function allNull(item: any): boolean {
+    return item == null || undefined || item == '';
 }
 
 //导出表格

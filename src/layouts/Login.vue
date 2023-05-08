@@ -105,7 +105,8 @@ function loginRule() {
 
 <style scoped>
 .main {
-    background-image: url('../assets/kiminame.png');
-    background-size: auto 100%;
+    background-image: url('../assets/bg.jpg');
+    background-size: cover;
+    background-repeat: no-repeat;
 }
 </style>

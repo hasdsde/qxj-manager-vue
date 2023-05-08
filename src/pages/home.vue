@@ -37,12 +37,15 @@
 import HomePageCard from "components/HomePageCard.vue";
 import {onMounted, ref} from "vue";
 import * as echarts from "echarts";
+import {useRouter} from "vue-router";
+import {allNull} from "components/utils";
 
 
-const userInfo = ref()
+const userInfo = ref({name: '未登录'})
 const chart1 = ref()
 const chart2 = ref()
 const chart3 = ref()
+const rt = useRouter()
 onMounted(
     () => {
         initChart1()
@@ -54,7 +57,12 @@ onMounted(
 getUserInfo()
 
 function getUserInfo() {
-    userInfo.value = JSON.parse(localStorage.getItem('userInfo'))
+    if (allNull(localStorage.getItem('userInfo'))) {
+        rt.push('/Login')
+    } else {
+        //@ts-ignore
+        userInfo.value = JSON.parse(localStorage.getItem('userInfo'));
+    }
 }
 
 function initChart1() {

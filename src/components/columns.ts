@@ -43,3 +43,21 @@ export const teacherColumns: any = [
     {name: 'enable', align: 'center', label: '账号状态', field: 'enable', type: 'bool', new: true, update: true},
     {name: 'handle', align: 'center', label: '操作', field: 'handle'},
 ]
+export const holidayColumns: any = [
+    {name: 'id', align: 'center', label: 'id', field: 'id', type: 'primary-key', update: true},
+    {name: 'name', align: 'center', label: '姓名', field: 'name', type: 'input', new: true, update: true},
+    {name: 'userId', align: 'center', label: '用户id', field: 'userId', type: 'input', new: true, update: true},
+    {name: 'college', align: 'center', label: '学院', field: 'college', new: false},
+    {name: 'className', align: 'center', label: '班级', field: 'className', new: false},
+    {name: 'reasonType', align: 'center', label: '类型', field: 'reasonType', type: 'input', new: true, update: true},
+    {name: 'imgUrl', align: 'center', label: '图片', field: 'imgUrl', type: 'input'},
+    {name: 'reason', align: 'center', label: '原因', field: 'reason', type: 'input', new: true, update: true},
+    {name: 'toArea', align: 'center', label: '前往地区', field: 'toArea', type: 'input', new: true, update: true},
+    {name: 'healthy', align: 'center', label: '健康状态', field: 'healthy', type: 'input', new: true, update: true},
+    {name: 'fromTime', align: 'center', label: '开始时间', field: 'fromTime', type: 'input', new: true, update: true},
+    {name: 'toTime', align: 'center', label: '结束时间', field: 'toTime', type: 'input', new: true, update: true},
+    // {name: 'grade', align: 'center', label: '年级', field: 'grade', new: false},
+    // {name: 'major', align: 'center', label: '专业', field: 'major', new: false},
+    {name: 'createTime', align: 'center', label: '创建时间', field: 'createTime', type: 'input'},
+    {name: 'handle', align: 'center', label: '操作', field: 'handle'},
+]
