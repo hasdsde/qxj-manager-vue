@@ -50,8 +50,8 @@ export function CommonWarn(msg: string) {
 
 export function CommonFail(msg: string) {
     Notify.create({
-        type: msg,
-        message: '操作失败',
+        type: 'negative',
+        message: msg,
         position: 'top',
         group: false
     })

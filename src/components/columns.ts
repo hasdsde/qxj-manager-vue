@@ -61,3 +61,6 @@ export const holidayColumns: any = [
     {name: 'createTime', align: 'center', label: '创建时间', field: 'createTime', type: 'input'},
     {name: 'handle', align: 'center', label: '操作', field: 'handle'},
 ]
+export const columns = {
+    '注册表': registerColumns, '学生表': studentColumns, '教师表': teacherColumns, '请假表': holidayColumns
+}
