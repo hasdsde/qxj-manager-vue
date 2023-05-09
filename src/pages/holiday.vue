@@ -78,7 +78,7 @@ import {Page} from "components/entity";
 import {CommonLoading, CommonSuccess, CommonWarn, LoadingFinish} from "components/commonResults";
 import {useQuasar} from "quasar";
 import AddDialog from "components/AddDialog.vue";
-import {holidayColumns, studentColumns} from "components/columns";
+import {holidayColumns} from "components/columns";
 import {getUserInfo} from "components/utils";
 
 const $q = useQuasar()
@@ -135,7 +135,7 @@ const addDialog = ref(false)
 const info = ref({title: '', mode: '', link: '', update: ''})
 //对studentColumns进行二次修改
 let dialogColumns: any = ref([])
-studentColumns.forEach((item: any) => {
+holidayColumns.forEach((item: any) => {
     dialogColumns.value.push(item)
 })
 

@@ -10,11 +10,11 @@
                 <q-input v-model="item.value" :label="item.label" readonly/>
             </q-card-section>
             <!--      一般表单      -->
-            <q-card-section class="q-pa-md" v-if="item.type=='input'">
+            <q-card-section class="q-pa-md" v-if="item.type=='input'&&item.new">
                 <q-input v-model="item.value" :label="item.label"/>
             </q-card-section>
             <!--      只能填数字      -->
-            <q-card-section class="q-pa-md" v-if="item.type=='number'">
+            <q-card-section class="q-pa-md" v-if="item.type=='number'&&item.new">
                 <q-input type="number" :rules="[val => val > 0 && val < 20229999999 || '数字非法']" v-model="item.value"
                          :label="item.label"/>
             </q-card-section>
@@ -27,6 +27,11 @@
             <q-card-section class="q-pa-md" v-if="item.type=='class_id'">
                 <ClassSelector @func="getClassId"/>
             </q-card-section>
+            <!--     选择框       -->
+            <q-card-section class="q-pa-md" v-if="item.type=='select'&&item.new">
+                <q-select v-model="item.value" :options="item.option" :label="item.label"/>
+            </q-card-section>
+
         </div>
 
         <!--    提交按钮    -->
