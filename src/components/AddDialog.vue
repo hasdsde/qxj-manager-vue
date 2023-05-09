@@ -31,7 +31,37 @@
             <q-card-section class="q-pa-md" v-if="item.type=='select'&&item.new">
                 <q-select v-model="item.value" :options="item.option" :label="item.label"/>
             </q-card-section>
+            <!--     时间选择器       -->
 
+            <q-card-section class="q-pa-md" v-if="item.type=='time'&&item.new">
+                <div>
+                    <q-input v-model="item.value" :label="item.label">
+                        <template v-slot:prepend>
+                            <q-icon name="event" class="cursor-pointer">
+                                <q-popup-proxy cover transition-show="scale" transition-hide="scale">
+                                    <q-date v-model="item.value" mask="YYYY-MM-DDTHH:mm">
+                                        <div class="row items-center justify-end">
+                                            <q-btn v-close-popup label="Close" color="primary" flat/>
+                                        </div>
+                                    </q-date>
+                                </q-popup-proxy>
+                            </q-icon>
+                        </template>
+
+                        <template v-slot:append>
+                            <q-icon name="access_time" class="cursor-pointer">
+                                <q-popup-proxy cover transition-show="scale" transition-hide="scale">
+                                    <q-time v-model="item.value" mask="YYYY-MM-DDTHH:mm" format24h>
+                                        <div class="row items-center justify-end">
+                                            <q-btn v-close-popup label="Close" color="primary" flat/>
+                                        </div>
+                                    </q-time>
+                                </q-popup-proxy>
+                            </q-icon>
+                        </template>
+                    </q-input>
+                </div>
+            </q-card-section>
         </div>
 
         <!--    提交按钮    -->
