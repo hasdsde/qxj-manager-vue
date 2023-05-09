@@ -19,9 +19,12 @@
             <q-card-section class="q-pt-none">
                 <q-select class="q-mt-md" filled v-model="college" :options="colleges" label="学院"
                           @update:model-value="onCollegeUpdate"/>
-                <q-select class="q-mt-md" filled v-model="grade" :options="grades" label="年级"/>
                 <q-select class="q-mt-md" filled v-model="major" :options="majors" label="专业"
+                          @update:model-value="onMajorUpdate"
+                />
+                <q-select class="q-mt-md" filled v-model="grade" :options="grades" label="年级"
                           @update:model-value="onClassUpdate"/>
+
                 <q-select class="q-mt-md" filled v-model="classe" :options="classes" label="班级"/>
             </q-card-section>
 
@@ -76,10 +79,14 @@ function getColleges() {
 // 修改学院时触发
 function onCollegeUpdate() {
     getMajorId()
-    getGradeId()
     major.value = null
     grade.value = null
     classe.value = null
+}
+
+// 修改专业时触发
+function onMajorUpdate() {
+    getGradeId()
 }
 
 //根据学院获取专业
@@ -94,7 +101,8 @@ function getMajorId() {
 
 //根据学院获取年级
 function getGradeId() {
-    api.get('/class/grade?collegeId=' + college.value.id).then((res: any) => {
+    api.get('/class/grade2?collegeId=' + college.value.id + '&majorId=' + major.value.id).then((res: any) => {
+        console.log(res)
         res.data.forEach((item: any) => {
             item.label = item.name
         })
