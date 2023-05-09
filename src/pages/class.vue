@@ -3,8 +3,8 @@
         <div class="q-pb-md">
             <q-btn color="primary" class="q-mr-md" label="新增" icon="add" @click="newItem"/>
             <q-btn color="primary" class="q-mr-md" label="新增学院" icon="apartment" @click="newCollege"/>
-            <q-btn color="secondary" class="q-mr-md" label="修改" icon="update"/>
-            <q-btn color="red" class="q-mr-md" label="删除" icon="delete"/>
+            <q-btn color="secondary" class="q-mr-md" label="修改" icon="update" @click="updateItem"/>
+            <q-btn color="red" class="q-mr-md" label="删除" icon="delete" @click="deleteItem"/>
         </div>
         <q-tree
                 :nodes="lazy"
@@ -49,7 +49,7 @@ import {api} from "boot/axios";
 import {CommonWarn} from "components/commonResults";
 import {commonCheckResponse, getClass, getGradeId, getMajorId} from "components/utils";
 import {useQuasar} from "quasar";
-
+// TODO:刷新有很大问题
 let nodes: any = ref([])
 const lazy = ref(nodes)
 const selected: any = ref([])
@@ -83,14 +83,6 @@ function defineCheck(value: any) {
 }
 
 
-//确保是单选
-function checkYouSelectOne() {
-    if (selected.value.length != 1) {
-        CommonWarn('请选择一项')
-        return
-    }
-}
-
 //新增
 function newItem() {
     //确保单选
@@ -99,6 +91,7 @@ function newItem() {
         return
     }
 
+    //不优雅
     //新增专业
     if (selected.value[0].type == 'college') {
         $q.dialog({
@@ -147,7 +140,63 @@ function newItem() {
     if (selected.value[0].type == 'grade') {
         dialog.value = true
     }
+    if (selected.value[0].type == 'class') {
+        dialog.value = true
+    }
 
+}
+
+//修改
+function updateItem() {
+    //确保单选
+    if (selected.value.length != 1) {
+        CommonWarn('请选择一项')
+        return
+    }
+
+    const params = {
+        name: '', id: selected.value[0].id
+    }
+    //优雅
+    $q.dialog({
+        title: '修改"' + selected.value[0].label + '"',
+        message: '新名称:',
+        prompt: {
+            model: '',
+            type: 'text'
+        },
+        cancel: true,
+        persistent: true
+    }).onOk(data => {
+        params.name = data
+        api.put("/class/" + selected.value[0].type, {}, {params}).then((res: any) => {
+            commonCheckResponse(res);
+        })
+    });
+
+}
+
+//删除
+function deleteItem() {
+
+    //确保单选
+    if (selected.value.length != 1) {
+        CommonWarn('请选择一项')
+        return
+    }
+    const params = {
+        id: selected.value[0].id
+    }
+    //哈哈，优雅
+    $q.dialog({
+        title: '确认删除',
+        message: '确定要删除"' + selected.value[0].label + '"吗',
+        cancel: true,
+    }).onOk(() => {
+        api.delete("/class/" + selected.value[0].type, {params}).then((res: any) => {
+            commonCheckResponse(res)
+        })
+    })
 }
 
 const dialog = ref(false)
