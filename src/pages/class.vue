@@ -1,9 +1,10 @@
 <template>
     <div class="q-pa-md q-gutter-sm">
         <div class="q-pb-md">
-            <q-btn color="primary" class="q-mr-md" label="新增" icon="add" @click="newItem"/>
-            <q-btn color="primary" class="q-mr-md" label="新增学院" icon="apartment" @click="newCollege"/>
-            <q-btn color="secondary" class="q-mr-md" label="修改" icon="update" @click="updateItem"/>
+            <q-btn color="primary" class="q-mr-md" label="刷新" icon="refresh" @click="noGoodFresh"/>
+            <q-btn color="secondary" class="q-mr-md" label="新增" icon="add" @click="newItem"/>
+            <q-btn color="purple" class="q-mr-md" label="新增学院" icon="apartment" @click="newCollege"/>
+            <q-btn color="orange" class="q-mr-md" label="修改" icon="update" @click="updateItem"/>
             <q-btn color="red" class="q-mr-md" label="删除" icon="delete" @click="deleteItem"/>
         </div>
         <q-tree
@@ -49,11 +50,13 @@ import {api} from "boot/axios";
 import {CommonWarn} from "components/commonResults";
 import {commonCheckResponse, getClass, getGradeId, getMajorId} from "components/utils";
 import {useQuasar} from "quasar";
+import {useRouter} from "vue-router";
 // TODO:刷新有很大问题
 let nodes: any = ref([])
 const lazy = ref(nodes)
 const selected: any = ref([])
 const $q = useQuasar()
+const rt = useRouter()
 const check = ref(false)
 loadPage()
 
@@ -61,6 +64,11 @@ function loadPage() {//方法有问题
     getColleges()
     getAllAdmin()
 }
+
+function noGoodFresh() {
+    rt.go(0)
+}
+
 
 //获取选择项
 function getSelect(value: any, evt: any) {
