@@ -1,7 +1,8 @@
 import {toRaw} from "vue";
 import {exportFile, useQuasar} from "quasar";
-import {CommonFail} from "components/commonResults";
+import {CommonFail, CommonSuccess} from "components/commonResults";
 import {useRouter} from "vue-router";
+import {api} from "boot/axios";
 
 const $q = useQuasar()
 const rt = useRouter()
@@ -9,6 +10,18 @@ const rt = useRouter()
 //将当前行数据转换为js对象
 export function rowsToObject(row: any): any {
     return toRaw(row)
+}
+
+export function commonCheckResponse(res: any) {
+    if (res.code == '200') {
+        if (allNull(res.msg)) {
+            CommonSuccess('操作成功')
+        } else {
+            CommonSuccess(res.msg)
+        }
+    } else {
+        CommonFail(res.msg)
+    }
 }
 
 //获取用户信息
@@ -78,4 +91,25 @@ function wrapCsvValue(val: any, formatFn: any, row: any) {
     // .split('\r').join('\\r')
 
     return `"${formatted}"`
+}
+
+
+//================================================年级专业==================================================
+
+
+//根据学院获取专业
+export async function getMajorId(collegeId: number): Promise<any> {
+    return api.get('/class/major?collegeId=' + collegeId)
+}
+
+//根据学院获取年级
+export async function getGradeId(majorId: number, collegeId: number) {
+    return api.get('/class/grade2?majorId=' + majorId + '&collegeId=' + collegeId)
+}
+
+//根据专业和年级获取班级
+export async function getClass(majorId: number, gradeId: number) {
+    return api.get('/class', {
+        params: {'majorId': majorId, 'gradeId': gradeId}
+    })
 }

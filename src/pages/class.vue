@@ -2,6 +2,7 @@
     <div class="q-pa-md q-gutter-sm">
         <div class="q-pb-md">
             <q-btn color="primary" class="q-mr-md" label="新增" icon="add" @click="newItem"/>
+            <q-btn color="primary" class="q-mr-md" label="新增学院" icon="apartment" @click="newCollege"/>
             <q-btn color="secondary" class="q-mr-md" label="修改" icon="update"/>
             <q-btn color="red" class="q-mr-md" label="删除" icon="delete"/>
         </div>
@@ -12,50 +13,194 @@
                 @lazy-load="onLazyLoad">
             <template v-slot:default-header="prop">
                 <div class="row items-center">
-                    <q-checkbox v-model="prop.node.selected" @update:model-value="getSelect(prop.node)"/>
+                    <q-checkbox v-model="prop.node.selected" @update:model-value="getSelect"
+                                @click="defineCheck(prop.node)"/>
                     <q-icon :name="prop.node.icon || 'sort'" color="primary" size="28px" class="q-mr-sm"/>
                     <div class="text-weight-bold " style="font-size: large">{{ prop.node.label }}</div>
                 </div>
             </template>
         </q-tree>
     </div>
+
+  <!-- 新增班级 -->
+    <q-dialog v-model="dialog">
+        <q-card style="min-width: 20%;">
+            <q-card-section class="row items-center q-pb-none">
+                <div class="text-h6">新建班级</div>
+                <q-space/>
+                <q-btn icon="close" flat round dense v-close-popup/>
+            </q-card-section>
+            <q-card-section>
+                <q-form class="q-gutter-md">
+                    <q-input class="q-pa-sm" filled v-model="className" label="班级名称"/>
+                    <q-select class="q-pa-sm" filled v-model="adminId" :options="adminInfo" label="管理员"/>
+                </q-form>
+            </q-card-section>
+            <q-card-actions align="right">
+                <q-btn flat label="确定" type="reset" color="primary" @click="newClass"/>
+            </q-card-actions>
+        </q-card>
+    </q-dialog>
 </template>
 
 <script lang="ts" setup>
 import {ref} from "vue";
 import {api} from "boot/axios";
 import {CommonWarn} from "components/commonResults";
+import {commonCheckResponse, getClass, getGradeId, getMajorId} from "components/utils";
+import {useQuasar} from "quasar";
 
 let nodes: any = ref([])
 const lazy = ref(nodes)
 const selected: any = ref([])
+const $q = useQuasar()
+const check = ref(false)
 loadPage()
 
-function loadPage() {
+function loadPage() {//方法有问题
     getColleges()
+    getAllAdmin()
 }
 
 //获取选择项
-function getSelect(value: any) {
-    selected.value.push(value)
+function getSelect(value: any, evt: any) {
+    check.value = value
 }
+
+//自定义勾选方法
+function defineCheck(value: any) {
+    if (check.value == true) {
+        selected.value.push(value);
+    } else {
+        const array: any = []
+        selected.value.forEach((item: any) => {
+            if (item != value) {
+                array.push(item)
+            }
+        })
+        selected.value = array
+    }
+}
+
 
 //确保是单选
 function checkYouSelectOne() {
     if (selected.value.length != 1) {
         CommonWarn('请选择一项')
-    } else {
         return
     }
 }
 
 //新增
 function newItem() {
-    checkYouSelectOne()
-    console.log(selected.value)
+    //确保单选
+    if (selected.value.length != 1) {
+        CommonWarn('请选择一项')
+        return
+    }
+
+    //新增专业
+    if (selected.value[0].type == 'college') {
+        $q.dialog({
+            title: '新增专业',
+            message: '专业名称:',
+            prompt: {
+                model: '',
+                type: 'text' // optional
+            },
+            cancel: true,
+            persistent: true
+        }).onOk(data => {
+            api.post("/class/major?name=" + data + '&collegeId=' + selected.value[0].id).then((res: any) => {
+                commonCheckResponse(res);
+            })
+        });
+    }
+
+
+    //新增年级
+    if (selected.value[0].type == 'major') {
+
+        $q.dialog({
+            title: '新增年级',
+            message: '年级名称:',
+            prompt: {
+                model: '',
+                type: 'text' // optional
+            },
+            cancel: true,
+            persistent: true
+        }).onOk(data => {
+            api.post("/class/grade", {}, {
+                params: {
+                    'collegeId': selected.value[0].collegeId,
+                    'majorId': selected.value[0].id,
+                    'name': data
+                }
+            }).then((res: any) => {
+                commonCheckResponse(res);
+            })
+        });
+    }
+
+    //新增班级
+    if (selected.value[0].type == 'grade') {
+        dialog.value = true
+    }
+
 }
 
-//@ts-ignore
+const dialog = ref(false)
+const adminInfo = ref([])
+const adminId = ref()
+const className = ref()
+
+//获取全部管理员信息
+function getAllAdmin() {
+    api.get("/admin/getAllAdmin").then((res: any) => {
+        commonCheckResponse(res)
+        res.data.forEach((item: any) => {
+            item.label = item.name
+            item.value = item.id
+        })
+        adminInfo.value = res.data
+    })
+}
+
+//新建班级
+function newClass() {
+    dialog.value = false
+    api.post("/class/class", {}, {
+        params: {
+            'gradeId': selected.value[0].id,
+            'majorId': selected.value[0].majorId,
+            'adminId': adminId.value.id,
+            'name': className.value
+        }
+    }).then((res: any) => {
+        commonCheckResponse(res);
+    })
+}
+
+//新建学院
+function newCollege() {
+    $q.dialog({
+        title: '新增学院',
+        message: '学院名称:',
+        prompt: {
+            model: '',
+            type: 'text' // optional
+        },
+        cancel: true,
+        persistent: true
+    }).onOk(data => {
+        api.post("/class/college?collegeName=" + data).then((res: any) => {
+            commonCheckResponse(res);
+        })
+    });
+}
+
+//@ts-ignore 懒加载
 function onLazyLoad({node, key, done, fail}) {
     //点击的是班级
     if (node.children.length > 0) {
@@ -92,7 +237,7 @@ function onLazyLoad({node, key, done, fail}) {
     }
     //点击的是年级
     if (node.type == 'grade') {
-        getClass(node.id, node.collegeId,).then((res: any) => {
+        getClass(node.majorId, node.id).then((res: any) => {
             res.data.forEach((item: any) => {
                 item.label = item.name
                 item.icon = 'school'
@@ -121,22 +266,7 @@ function getColleges() {
     })
 }
 
-//根据学院获取专业
-async function getMajorId(collegeId: number): Promise<any> {
-    return api.get('/class/major?collegeId=' + collegeId)
-}
 
-//根据学院获取年级
-async function getGradeId(majorId: number, collegeId: number) {
-    return api.get('/class/grade2?majorId=' + majorId + '&collegeId=' + collegeId)
-}
-
-//根据专业和年级获取班级
-async function getClass(majorId: number, gradeId: number) {
-    return api.get('/class', {
-        params: {'majorId': majorId, 'gradeId': gradeId}
-    })
-}
 </script>
 
 <style scoped>
