@@ -35,7 +35,7 @@
 
             <q-card-section class="q-pa-md" v-if="item.type=='time'&&item.new">
                 <div>
-                    <q-input v-model="item.value" :label="item.label">
+                    <q-input v-model="item.value" :label="item.label" readonly>
                         <template v-slot:prepend>
                             <q-icon name="event" class="cursor-pointer">
                                 <q-popup-proxy cover transition-show="scale" transition-hide="scale">
