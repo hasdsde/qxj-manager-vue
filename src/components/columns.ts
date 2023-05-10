@@ -7,8 +7,20 @@ export const registerColumns: any = [
     {name: 'phone', align: 'center', label: '电话', field: 'phone'},
     {name: 'emergencyPhone', align: 'center', label: '紧急电话', field: 'emergencyPhone'},
     {name: 'crateTime', align: 'center', label: '创建时间', field: 'crateTime'},
-    {name: 'status', align: 'center', label: '学生状态', field: 'status'},
-    {name: 'enable', align: 'center', label: '账号状态', field: 'enable'},
+    {
+        name: 'status', align: 'center', label: '学生状态', field: 'status', option: [
+            {label: '正常', value: 1, color: 'primary'},
+            {label: '异常', value: 2, color: 'red'}
+        ]
+    },
+    {
+        name: 'enable', align: 'center', label: '账号状态', field: 'enable', option: [
+            {label: '待审批', value: 0, color: 'orange'},
+            {label: '可用', value: 1, color: 'primary'},
+            {label: '已删除', value: 2, color: 'orange'},
+            {label: '拒绝', value: 3, color: 'red'}
+        ]
+    },
     {name: 'handle', align: 'center', label: '操作', field: 'handle'},
 ]
 export const studentColumns: any = [
@@ -30,8 +42,25 @@ export const studentColumns: any = [
         new: true,
         update: true
     },
-    {name: 'status', align: 'center', label: '学生状态', field: 'status', type: 'bool', new: false},
-    {name: 'enable', align: 'center', label: '账号状态', field: 'enable', type: 'bool', new: true, update: true},
+    {
+        name: 'status', align: 'center', label: '学生状态', field: 'status', type: 'bool', new: false, option: [
+            {label: '正常', value: 1, color: 'primary'},
+            {label: '异常', value: 2, color: 'red'}
+        ]
+    },
+    {
+        name: 'enable',
+        align: 'center',
+        label: '账号状态',
+        field: 'enable',
+        type: 'bool',
+        new: true,
+        update: true,
+        option: [
+            {label: '不可用', value: -1, color: 'red'},
+            {label: '正常', value: 1, color: 'primary'},
+        ]
+    },
     {name: 'handle', align: 'center', label: '操作', field: 'handle', new: false},
 ]
 export const teacherColumns: any = [
@@ -40,7 +69,19 @@ export const teacherColumns: any = [
     {name: 'number', align: 'center', label: '工号', field: 'number', type: 'number', new: true, update: true},
     {name: 'college', align: 'center', label: '学院', field: 'college', type: 'input', new: true, update: true},
     {name: 'role', align: 'center', label: '角色', field: 'role', type: 'number', new: true, update: true},
-    {name: 'enable', align: 'center', label: '账号状态', field: 'enable', type: 'bool', new: true, update: true},
+    {
+        name: 'enable',
+        align: 'center',
+        label: '账号状态',
+        field: 'enable',
+        type: 'bool',
+        new: true,
+        update: true,
+        option: [
+            {label: '不可用', value: 0, color: 'red'},
+            {label: '正常', value: 1, color: 'primary'},
+        ]
+    },
     {name: 'handle', align: 'center', label: '操作', field: 'handle'},
 ]
 export const holidayColumns: any = [
@@ -57,7 +98,10 @@ export const holidayColumns: any = [
         type: 'select',
         new: true,
         update: true,
-        option: [{label: '病假', value: 1}, {label: '事假', value: 2}, {label: '其他', value: 3}]
+        option: [
+            {label: '病假', value: 1, color: 'secondary'},
+            {label: '事假', value: 2, color: 'primary'},
+            {label: '其他', value: 3, color: 'purple'}]
     },
     {name: 'imgUrl', align: 'center', label: '图片', field: 'imgUrl', type: 'input'},
     {name: 'reason', align: 'center', label: '原因', field: 'reason', type: 'input', new: true, update: true},
@@ -70,7 +114,10 @@ export const holidayColumns: any = [
         type: 'select',
         new: true,
         update: true,
-        option: [{label: '正常', value: 1}, {label: '异常', value: 2}]
+        option: [
+            {label: '正常', value: 1, color: 'primary'},
+            {label: '异常', value: 2, color: 'red'}
+        ]
     },
     {
         name: 'status',

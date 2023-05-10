@@ -34,14 +34,14 @@
                      hide-pagination>
                 <template v-slot:body-cell-status="props:any">
                     <q-td :props="props">
-                        <q-badge :color="props.row.status==1?'secondary':'red'"
-                                 :label="props.row.status==1?'正常':'异常'"/>
+                        <q-badge :color="getColorFromId(props,'status')"
+                                 :label="getLabelFromId(props,'status')"/>
                     </q-td>
                 </template>
                 <template v-slot:body-cell-enable="props">
                     <q-td :props="props">
-                        <q-badge :color="props.row.enable==1?'primary':'red'"
-                                 :label="props.row.enable==1?'可用':'已删除'"/>
+                        <q-badge :color="getColorFromId(props,'enable')"
+                                 :label="getLabelFromId(props,'enable')"/>
                     </q-td>
                 </template>
                 <template v-slot:body-cell-handle="props">
@@ -74,6 +74,7 @@ import {CommonLoading, CommonSuccess, CommonWarn, LoadingFinish} from "component
 import {useQuasar} from "quasar";
 import AddDialog from "components/AddDialog.vue";
 import {studentColumns} from "components/columns";
+import {getColorFromId, getLabelFromId} from "components/utils";
 
 const $q = useQuasar()
 //分页管理

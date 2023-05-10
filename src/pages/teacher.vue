@@ -41,8 +41,8 @@
                 </template>
                 <template v-slot:body-cell-enable="props">
                     <q-td :props="props">
-                        <q-badge :color="props.row.enable==1?'primary':'red'"
-                                 :label="props.row.enable==1?'可用':'不可用'"/>
+                        <q-badge :color="getColorFromId(props,'enable')"
+                                 :label="getLabelFromId(props,'enable')"/>
                     </q-td>
                 </template>
                 <template v-slot:body-cell-handle="props">
@@ -75,6 +75,7 @@ import {CommonLoading, CommonSuccess, CommonWarn, LoadingFinish} from "component
 import {useQuasar} from "quasar";
 import AddDialog from "components/AddDialog.vue";
 import {teacherColumns} from "components/columns";
+import {getColorFromId, getLabelFromId} from "components/utils";
 
 const $q = useQuasar()
 //分页管理

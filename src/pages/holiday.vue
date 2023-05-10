@@ -34,14 +34,14 @@
                      hide-pagination>
                 <template v-slot:body-cell-reasonType="props:any">
                     <q-td :props="props">
-                        <q-badge :color="props.row.reasonType==1?'secondary':'red'"
-                                 :label="props.row.reasonType==1?'事假':'病假'"/>
+                        <q-badge :color="getColorFromId(props,'reasonType')"
+                                 :label="getLabelFromId(props,'reasonType')"/>
                     </q-td>
                 </template>
                 <template v-slot:body-cell-healthy="props">
                     <q-td :props="props">
-                        <q-badge :color="props.row.healthy=='正常'?'primary':'red'"
-                                 :label="props.row.healthy=='正常'?'正常':'异常'"/>
+                        <q-badge :color="getColorFromId(props,'healthy')"
+                                 :label="getLabelFromId(props,'healthy')"/>
                     </q-td>
                 </template>
                 <template v-slot:body-cell-status="props">

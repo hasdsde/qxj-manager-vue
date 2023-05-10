@@ -33,19 +33,18 @@
                      hide-pagination>
                 <template v-slot:body-cell-status="props:any">
                     <q-td :props="props">
-                        <q-badge :color="props.row.status==1?'secondary':'red'"
-                                 :label="props.row.status==1?'正常':'异常'"/>
+                        <q-badge :color="getColorFromId(props,'status')"
+                                 :label="getLabelFromId(props,'status')"/>
                     </q-td>
                 </template>
                 <template v-slot:body-cell-enable="props">
+                    <!--* 审批中：0-->
+                    <!--* 可用：1-->
+                    <!--* 已删除：2-->
+                    <!--* 审批拒绝：-1-->
                     <q-td :props="props">
-                        <!--* 审批中：0-->
-                        <!--* 可用：1-->
-                        <!--* 已删除：2-->
-                        <!--* 审批拒绝：-1-->
-                        <q-badge v-if="props.row.enable==0" color="purple" label="待审核"/>
-                        <q-badge v-if="props.row.enable==1" color="primary" label="通过"/>
-                        <q-badge v-if="props.row.enable==-1" color="red" label="已拒绝"/>
+                        <q-badge :color="getColorFromId(props,'enable')"
+                                 :label="getLabelFromId(props,'enable')"/>
                     </q-td>
                 </template>
                 <template v-slot:body-cell-handle="props">
@@ -108,6 +107,7 @@ import {Page} from "components/entity";
 import AddDialog from "components/AddDialog.vue";
 import {useQuasar} from "quasar";
 import {CommonLoading, CommonSuccess, CommonWarn, LoadingFinish, Success} from "components/commonResults";
+import {getColorFromId, getLabelFromId} from "components/utils";
 
 const $q = useQuasar()
 
