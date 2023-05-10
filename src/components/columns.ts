@@ -45,7 +45,7 @@ export const studentColumns: any = [
     {
         name: 'status', align: 'center', label: '学生状态', field: 'status', type: 'bool', new: false, option: [
             {label: '正常', value: 1, color: 'primary'},
-            {label: '异常', value: 2, color: 'red'}
+            {label: '异常', value: 0, color: 'red'}
         ]
     },
     {
