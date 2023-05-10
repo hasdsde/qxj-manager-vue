@@ -24,6 +24,12 @@ export function commonCheckResponse(res: any) {
     }
 }
 
+//测试用
+export function Console(value: any) {
+    console.log(value)
+
+};
+
 //这个用于表格中的option选项
 export function getLabelFromId(value: any, itemCol: any): string {
     let result = ""

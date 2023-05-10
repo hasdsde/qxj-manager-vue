@@ -57,10 +57,20 @@
                                           :options="[true,false]"
                                           class="q-mt-md" dense v-for="c in col"
                                           v-model="c[item.value]"/>
-                                <q-input filled v-if="item.valueType==='option'"
-                                         :options="item.option"
-                                         class="q-mt-md" dense v-for="c in col"
-                                         v-model="c[item.value]"/>
+                                <div v-for="c in col">
+                                    <!--好难看，因为v-model不能为空-->
+                                    <q-select filled
+                                              v-if="item.valueType==='option'&&c.option!=null"
+                                              :options="c.option"
+                                              class="q-mt-md" dense
+                                              v-model="c.option[0]" @click="Console(c.option[0])"/>
+                                    <q-select filled
+                                              v-if="item.valueType==='option'&&c.option==null"
+                                              :options="c.option"
+                                              class="q-mt-md" dense
+                                              v-model="c.option" @click="Console(c.option[0])"/>
+                                </div>
+
                             </div>
                         </div>
                     </q-card-section>
@@ -74,6 +84,7 @@ import {columns} from "components/columns";
 import {building, LoadingFinish} from "components/commonResults";
 import {onBeforeMount, onMounted} from "vue";
 import {useQuasar} from "quasar";
+import {Console} from "components/utils";
 
 
 onBeforeMount(() => {
