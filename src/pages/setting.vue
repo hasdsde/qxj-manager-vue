@@ -21,9 +21,9 @@
                         <div class="row">
                             <!--                            <div class="text-h6 col">{{ index }}</div>-->
                             <div>
-                                <q-btn class="col q-mr-md" label="新增列" color="secondary" icon="add"
+                                <q-btn class="col q-mr-md" label="新增列" color="secondary"
                                        @click="building()"/>
-                                <q-btn class="col q-mr-md" label="删除列" color="red" icon="delete"
+                                <q-btn class="col q-mr-md" label="删除列" color="red"
                                        @click="building()"/>
                                 <q-btn class="col" label="保存修改" color="primary" @click="building()"/>
                             </div>
