@@ -44,6 +44,12 @@
                                  :label="props.row.healthy=='正常'?'正常':'异常'"/>
                     </q-td>
                 </template>
+                <template v-slot:body-cell-status="props">
+                    <q-td :props="props">
+                        <q-badge :color="getColorFromId(props,'status')"
+                                 :label="getLabelFromId(props,'status')"/>
+                    </q-td>
+                </template>
                 <template v-slot:body-cell-imgUrl="props">
                     <q-td :props="props">
                         <q-btn label="查看" size="sm"/>
@@ -79,7 +85,7 @@ import {CommonLoading, CommonSuccess, CommonWarn, LoadingFinish} from "component
 import {useQuasar} from "quasar";
 import AddDialog from "components/AddDialog.vue";
 import {holidayColumns} from "components/columns";
-import {getUserInfo} from "components/utils";
+import {getColorFromId, getLabelFromId, getUserInfo} from "components/utils";
 
 const $q = useQuasar()
 //分页管理
@@ -94,6 +100,7 @@ const searchNumber = ref('')
 const searchClass = ref([])
 const userInfo = getUserInfo()
 loadPage()
+
 
 function loadPage() {
     CommonLoading($q)

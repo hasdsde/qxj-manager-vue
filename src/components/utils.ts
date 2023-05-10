@@ -24,6 +24,28 @@ export function commonCheckResponse(res: any) {
     }
 }
 
+//这个用于表格中的option选项
+export function getLabelFromId(value: any, itemCol: any): string {
+    let result = ""
+    value.col.option.forEach((item: any) => {
+        if (item.value == value.row[itemCol]) {
+            result = item.label
+        }
+    });
+    return result
+}
+
+//这个用于表格中的option选项
+export function getColorFromId(value: any, itemCol: any): string {
+    let result = ""
+    value.col.option.forEach((item: any) => {
+        if (item.value == value.row[itemCol]) {
+            result = item.color
+        }
+    });
+    return result
+}
+
 //获取用户信息
 export function getUserInfo() {
     if (localStorage.getItem("userInfo") == null) {

@@ -57,7 +57,7 @@ export const holidayColumns: any = [
         type: 'select',
         new: true,
         update: true,
-        option: ['病假', '事假', '其他']
+        option: [{label: '病假', value: 1}, {label: '事假', value: 2}, {label: '其他', value: 3}]
     },
     {name: 'imgUrl', align: 'center', label: '图片', field: 'imgUrl', type: 'input'},
     {name: 'reason', align: 'center', label: '原因', field: 'reason', type: 'input', new: true, update: true},
@@ -70,7 +70,28 @@ export const holidayColumns: any = [
         type: 'select',
         new: true,
         update: true,
-        option: ['正常', '异常']
+        option: [{label: '正常', value: 1}, {label: '异常', value: 2}]
+    },
+    {
+        name: 'status',
+        align: 'center',
+        label: '请假状态',
+        field: 'status',
+        type: 'select',
+        new: true,
+        update: true,
+        option: [
+            {label: '异常', value: 0, color: 'red'},
+            {label: '审核中', value: 1, color: 'orange'},
+            {label: '审核已通过', value: 2, color: 'primary'},
+            {label: '审核拒绝', value: 3, color: 'red'},
+            {label: '待销假', value: 4, color: 'orange'},
+            {label: '销假未通过', value: 5, color: 'red'},
+            {label: '销假超时', value: 6, color: 'red'},
+            {label: '已销假', value: 7, color: 'green'},
+            {label: '审核超时', value: 8, color: 'red'},
+            {label: '已取消', value: 9, color: 'red'},
+        ]
     },
     {name: 'fromTime', align: 'center', label: '开始时间', field: 'fromTime', type: 'time', new: true, update: true},
     {name: 'toTime', align: 'center', label: '结束时间', field: 'toTime', type: 'time', new: true, update: true},

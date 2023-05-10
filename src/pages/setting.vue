@@ -71,8 +71,26 @@
 </template>
 <script setup>
 import {columns} from "components/columns";
-import {building} from "components/commonResults";
+import {building, LoadingFinish} from "components/commonResults";
+import {onBeforeMount, onMounted} from "vue";
+import {useQuasar} from "quasar";
 
+
+onBeforeMount(() => {
+    // const $q = useQuasar()
+    // CommonLoading($q)
+    console.log("加载很慢")
+
+})
+onMounted(() => {
+    console.log('加载完成')
+    // const $q = useQuasar()
+    // LoadingFinish($q)
+})
+
+
+const $q = useQuasar()
+LoadingFinish($q)
 const settingColumns = columns
 const items = [
     {valueName: '属性名', value: 'name', valueType: 'str'},
