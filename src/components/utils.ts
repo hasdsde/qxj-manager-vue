@@ -12,6 +12,7 @@ export function rowsToObject(row: any): any {
     return toRaw(row)
 }
 
+//一般操作
 export function commonCheckResponse(res: any) {
     if (res.code == '200') {
         if (allNull(res.msg)) {
@@ -22,6 +23,11 @@ export function commonCheckResponse(res: any) {
     } else {
         CommonFail(res.msg)
     }
+}
+
+//用于去掉T的日期而且不改变原来的
+export function getHumanDate(date: string) {
+    return date.replace('T', ' ')
 }
 
 //测试用

@@ -32,7 +32,6 @@
                 <q-select v-model="item.value" :options="item.option" :label="item.label"/>
             </q-card-section>
             <!--     时间选择器       -->
-
             <q-card-section class="q-pa-md" v-if="item.type=='time'&&item.new">
                 <div>
                     <q-input v-model="item.value" :label="item.label" readonly>
@@ -86,6 +85,7 @@ import ClassSelector from "components/ClassSelector.vue";
 import {api} from "boot/axios";
 import {CommonSuccess} from "components/commonResults";
 import {useRouter} from "vue-router";
+import {allNull} from "components/utils";
 
 
 const props = defineProps(['info', 'column'])
@@ -134,9 +134,15 @@ function handleParam() {
     // 新增
     if (info.value.mode == 'new') {
         column.value.forEach((item: any) => {
+            // 判断主键
             if (item.type != 'primary-key' && item.value != null && item.value != "") {
                 if (item.new) {
-                    params[item.name] = item.value
+                    // 判断是对象
+                    if (!allNull(item.value.value)) {
+                        params[item.name] = item.value.value;
+                    } else {
+                        params[item.name] = item.value;
+                    }
                 }
             }
         })
@@ -147,7 +153,12 @@ function handleParam() {
     if (info.value.mode == 'update') {
         column.value.forEach((item: any) => {
             if (item.update && item.value != null && item.value != "") {
-                params[item.name] = item.value
+                // 判断是对象
+                if (!allNull(item.value.value)) {
+                    params[item.name] = item.value.value;
+                } else {
+                    params[item.name] = item.value;
+                }
             }
         })
         column.value.filter((item: any) => {

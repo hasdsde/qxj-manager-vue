@@ -32,6 +32,21 @@
                      selection="multiple"
                      v-model:selected="selected"
                      hide-pagination>
+                <template v-slot:body-cell-fromTime="props:any">
+                    <q-td :props="props">
+                        {{ getHumanDate(props.row.fromTime) }}
+                    </q-td>
+                </template>
+                <template v-slot:body-cell-toTime="props:any">
+                    <q-td :props="props">
+                        {{ getHumanDate(props.row.toTime) }}
+                    </q-td>
+                </template>
+                <template v-slot:body-cell-createTime="props:any">
+                    <q-td :props="props">
+                        {{ getHumanDate(props.row.createTime) }}
+                    </q-td>
+                </template>
                 <template v-slot:body-cell-reasonType="props:any">
                     <q-td :props="props">
                         <q-badge :color="getColorFromId(props,'reasonType')"
@@ -57,7 +72,20 @@
                 </template>
                 <template v-slot:body-cell-handle="props">
                     <q-td :props="props">
-                        <q-btn label="编辑" color="primary" size="sm" @click="handleUpdate(props.row)"/>
+                        <q-btn label="编辑" class="q-mr-md" color="primary" size="sm" @click="handleUpdate(props.row)"/>
+                        <q-btn color="orange" label="修改状态" size="sm">
+                            <q-menu>
+                                <q-list>
+                                    <q-item clickable v-close-popup v-for="option in statusOptions">
+                                        <q-item-section :class="'text-'+option.color"
+                                                        @click="handleStatus(props.row,option.value)">{{
+                                            option.label
+                                            }}
+                                        </q-item-section>
+                                    </q-item>
+                                </q-list>
+                            </q-menu>
+                        </q-btn>
                     </q-td>
                 </template>
             </q-table>
@@ -85,7 +113,7 @@ import {CommonLoading, CommonSuccess, CommonWarn, LoadingFinish} from "component
 import {useQuasar} from "quasar";
 import AddDialog from "components/AddDialog.vue";
 import {holidayColumns} from "components/columns";
-import {getColorFromId, getLabelFromId, getUserInfo} from "components/utils";
+import {commonCheckResponse, getColorFromId, getHumanDate, getLabelFromId, getUserInfo} from "components/utils";
 
 const $q = useQuasar()
 //分页管理
@@ -151,20 +179,20 @@ function handleNew() {
     addDialog.value = true;
     info.value.title = '新增'
     info.value.mode = 'new'
-    info.value.link = '/admin/user'
+    info.value.link = '/user/commit'
 }
 
 
 //修改
 function handleUpdate(rows: any) {
     addDialog.value = true;
-    //将既定的命运交给需要之人
+    //将既定的命运交给需要之人   ,
     dialogColumns.value.forEach((dialogColumn: any) => {
         dialogColumn.value = rows[dialogColumn.name]
     })
     info.value.title = '修改'
     info.value.mode = 'update'
-    info.value.link = '/admin/user'
+    info.value.link = '/user/updates'
 }
 
 
@@ -175,12 +203,12 @@ function handleDelete() {
         return
     }
     $q.dialog({
-        title: '删除用户',
+        title: '删除',
         message: '你确定要删除' + selected.value.length + '条数据吗?',
         cancel: true
     }).onOk(() => {
         selected.value.forEach((item: any) => {
-            api.delete('admin/leave/delete?id=' + item.id).then((res: any) => {
+            api.delete('/admin/leave/delete?id=' + item.id).then((res: any) => {
                 if (res.code == '200') {
                     CommonSuccess('操作成功')
                     loadPage();
@@ -191,5 +219,26 @@ function handleDelete() {
     })
 }
 
+//状态
+const statusOptions = [
+    {label: '已删除', value: 0, color: 'red'},
+    {label: '审核中', value: 1, color: 'orange'},
+    {label: '审核已通过', value: 2, color: 'primary'},
+    {label: '审核拒绝', value: 3, color: 'red'},
+    {label: '待销假', value: 4, color: 'orange'},
+    {label: '销假未通过', value: 5, color: 'red'},
+    {label: '销假超时', value: 6, color: 'red'},
+    {label: '已销假', value: 7, color: 'green'},
+    {label: '审核超时', value: 8, color: 'red'},
+    {label: '已取消', value: 9, color: 'red'},
+]
 
+//修改状态
+function handleStatus(row: any, status: any) {
+    api.post("/admin/leave/approval/" + status + "?id=" + row.id,).then((res: any) => {
+        commonCheckResponse(res)
+        loadPage()
+    })
+
+}
 </script>

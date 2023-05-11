@@ -38,6 +38,11 @@
                                  :label="getLabelFromId(props,'status')"/>
                     </q-td>
                 </template>
+                <template v-slot:body-cell-createTime="props:any">
+                    <q-td :props="props">
+                        {{ getHumanDate(props.row.createTime) }}
+                    </q-td>
+                </template>
                 <template v-slot:body-cell-enable="props">
                     <q-td :props="props">
                         <q-badge :color="getColorFromId(props,'enable')"
@@ -74,7 +79,7 @@ import {CommonLoading, CommonSuccess, CommonWarn, LoadingFinish} from "component
 import {useQuasar} from "quasar";
 import AddDialog from "components/AddDialog.vue";
 import {studentColumns} from "components/columns";
-import {getColorFromId, getLabelFromId} from "components/utils";
+import {getColorFromId, getHumanDate, getLabelFromId} from "components/utils";
 
 const $q = useQuasar()
 //分页管理

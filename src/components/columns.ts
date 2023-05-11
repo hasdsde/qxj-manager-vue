@@ -125,10 +125,10 @@ export const holidayColumns: any = [
         label: '请假状态',
         field: 'status',
         type: 'select',
-        new: true,
-        update: true,
+        new: false,
+        update: false,
         option: [
-            {label: '异常', value: 0, color: 'red'},
+            {label: '已删除', value: 0, color: 'red'},
             {label: '审核中', value: 1, color: 'orange'},
             {label: '审核已通过', value: 2, color: 'primary'},
             {label: '审核拒绝', value: 3, color: 'red'},

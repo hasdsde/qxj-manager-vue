@@ -47,6 +47,11 @@
                                  :label="getLabelFromId(props,'enable')"/>
                     </q-td>
                 </template>
+                <template v-slot:body-cell-crateTime="props:any">
+                    <q-td :props="props">
+                        {{ getHumanDate(props.row.crateTime) }}
+                    </q-td>
+                </template>
                 <template v-slot:body-cell-handle="props">
                     <q-td :props="props">
                         <q-btn label="详情" size="sm" class="q-mr-sm" color="secondary"
@@ -107,7 +112,7 @@ import {Page} from "components/entity";
 import AddDialog from "components/AddDialog.vue";
 import {useQuasar} from "quasar";
 import {CommonLoading, CommonSuccess, CommonWarn, LoadingFinish, Success} from "components/commonResults";
-import {getColorFromId, getLabelFromId} from "components/utils";
+import {getColorFromId, getHumanDate, getLabelFromId} from "components/utils";
 
 const $q = useQuasar()
 
