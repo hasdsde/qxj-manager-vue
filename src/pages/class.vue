@@ -4,8 +4,7 @@
             <q-btn color="primary" class="q-mr-md" label="刷新" icon="refresh" @click="noGoodFresh"/>
             <q-btn color="secondary" class="q-mr-md" label="新增" icon="add" @click="newItem"/>
             <q-btn color="purple" class="q-mr-md" label="新增学院" icon="apartment" @click="newCollege"/>
-            <q-btn color="orange" class="q-mr-md" label="修改名称" icon="update" @click="updateItem"/>
-            <q-btn color="orange-5" class="q-mr-md" label="修改导员" icon="update" @click="updateAdmin"/>
+            <q-btn color="orange" class="q-mr-md" label="修改" icon="update" @click="updateItem"/>
             <q-btn color="red" class="q-mr-md" label="删除" icon="delete" @click="deleteItem"/>
         </div>
         <q-tree
@@ -29,7 +28,7 @@
     </div>
 
   <!-- 新增班级 -->
-    <q-dialog v-model="dialog">
+    <q-dialog v-model="newDialog">
         <q-card style="min-width: 20%;">
             <q-card-section class="row items-center q-pb-none">
                 <div class="text-h6">新建班级</div>
@@ -44,6 +43,25 @@
             </q-card-section>
             <q-card-actions align="right">
                 <q-btn flat label="确定" type="reset" color="primary" @click="newClass"/>
+            </q-card-actions>
+        </q-card>
+    </q-dialog>
+  <!--  修改班级  -->
+    <q-dialog v-model="updateDialog">
+        <q-card style="min-width: 20%;">
+            <q-card-section class="row items-center q-pb-none">
+                <div class="text-h6">班级</div>
+                <q-space/>
+                <q-btn icon="close" flat round dense v-close-popup/>
+            </q-card-section>
+            <q-card-section>
+                <q-form class="q-gutter-md">
+                    <q-input class="q-pa-sm" filled v-model="className" label="班级名称"/>
+                    <q-select class="q-pa-sm" filled v-model="adminId" :options="adminInfo" label="管理员"/>
+                </q-form>
+            </q-card-section>
+            <q-card-actions align="right">
+                <q-btn flat label="确定" type="reset" color="primary" @click="updateClass"/>
             </q-card-actions>
         </q-card>
     </q-dialog>
@@ -152,10 +170,10 @@ function newItem() {
 
     //新增班级
     if (selected.value[0].type == 'grade') {
-        dialog.value = true
+        newDialog.value = true
     }
     if (selected.value[0].type == 'class') {
-        dialog.value = true
+        newDialog.value = true
     }
 
 }
@@ -171,6 +189,22 @@ function updateItem() {
     const params = {
         name: '', id: selected.value[0].id
     }
+
+    //修改班级
+    if (selected.value[0].type == 'class') {
+        className.value = selected.value[0].name
+        adminId.value = selected.value[0].adminId
+        api.get('/admin/getAllAdmin?collegeId=' + selected.value[0].collegeId).then((res: any) => {
+            res.data.forEach((item: any) => {
+                item.label = item.name
+                item.value = item.id
+            })
+            adminInfo.value = res.data
+        })
+        updateDialog.value = true;
+        return;
+    }
+
     //优雅
     $q.dialog({
         title: '修改"' + selected.value[0].label + '"',
@@ -185,6 +219,7 @@ function updateItem() {
         params.name = data
         api.put("/class/" + selected.value[0].type, {}, {params}).then((res: any) => {
             commonCheckResponse(res);
+            loadPage()
         })
     });
 
@@ -213,10 +248,11 @@ function deleteItem() {
     })
 }
 
-const dialog = ref(false)
+const newDialog = ref(false)
 const adminInfo = ref([])
 const adminId = ref()
 const className = ref()
+const updateDialog = ref(false)
 
 //获取全部管理员信息
 function getAllAdmin() {
@@ -230,9 +266,10 @@ function getAllAdmin() {
     })
 }
 
+
 //新建班级
 function newClass() {
-    dialog.value = false
+    newDialog.value = false
     api.post("/class/class", {}, {
         params: {
             'gradeId': selected.value[0].id,
@@ -242,6 +279,22 @@ function newClass() {
         }
     }).then((res: any) => {
         commonCheckResponse(res);
+        loadPage()
+    })
+}
+
+//修改班级
+function updateClass() {
+    updateDialog.value = false
+    api.put("/class/class", {}, {
+        params: {
+            'id': selected.value[0].id,
+            'name': className.value,
+            'adminId': adminId.value.id,
+        }
+    }).then((res: any) => {
+        commonCheckResponse(res);
+        loadPage()
     })
 }
 
@@ -259,17 +312,13 @@ function newCollege() {
     }).onOk(data => {
         api.post("/class/college?collegeName=" + data).then((res: any) => {
             commonCheckResponse(res);
+            loadPage()
         })
     });
 }
 
 //@ts-ignore 懒加载
 function onLazyLoad({node, key, done, fail}) {
-    //点击的是班级
-    if (node.children.length > 0) {
-        done([])
-        return
-    }
     //点击的是学院
     if (node.type == 'college') {
         getMajorId(node.id).then((res: any) => {
@@ -306,6 +355,7 @@ function onLazyLoad({node, key, done, fail}) {
                 item.icon = 'school'
                 item.type = 'class';
                 item.selected = false
+                item.collegeId = node.collegeId
             })
             done(res.data)
         })
