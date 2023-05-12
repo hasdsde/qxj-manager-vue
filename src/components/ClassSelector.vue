@@ -119,7 +119,7 @@ function onClassUpdate() {
         }
     }).then((res: any) => {
         res.data.forEach((item: any) => {
-            item.label = item.name
+            item.label = item.name + "(" + item.adminName + ")"
         })
         classes.value = res.data
     })

@@ -4,7 +4,8 @@
             <q-btn color="primary" class="q-mr-md" label="刷新" icon="refresh" @click="noGoodFresh"/>
             <q-btn color="secondary" class="q-mr-md" label="新增" icon="add" @click="newItem"/>
             <q-btn color="purple" class="q-mr-md" label="新增学院" icon="apartment" @click="newCollege"/>
-            <q-btn color="orange" class="q-mr-md" label="修改" icon="update" @click="updateItem"/>
+            <q-btn color="orange" class="q-mr-md" label="修改名称" icon="update" @click="updateItem"/>
+            <q-btn color="orange-5" class="q-mr-md" label="修改导员" icon="update" @click="updateAdmin"/>
             <q-btn color="red" class="q-mr-md" label="删除" icon="delete" @click="deleteItem"/>
         </div>
         <q-tree
@@ -18,6 +19,10 @@
                                 @click="defineCheck(prop.node)"/>
                     <q-icon :name="prop.node.icon || 'sort'" color="primary" size="28px" class="q-mr-sm"/>
                     <div class="text-weight-bold " style="font-size: large">{{ prop.node.label }}</div>
+                    <div class="text-weight-bold text-primary" v-if="prop.node.adminName" style="font-size: large">({{
+                        prop.node.adminName
+                        }})
+                    </div>
                 </div>
             </template>
         </q-tree>
@@ -52,6 +57,7 @@ import {commonCheckResponse, getClass, getGradeId, getMajorId} from "components/
 import {useQuasar} from "quasar";
 import {useRouter} from "vue-router";
 // TODO:刷新有很大问题
+// TODO:新增导员
 let nodes: any = ref([])
 const lazy = ref(nodes)
 const selected: any = ref([])

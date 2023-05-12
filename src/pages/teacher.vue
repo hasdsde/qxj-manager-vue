@@ -47,7 +47,10 @@
                 </template>
                 <template v-slot:body-cell-handle="props">
                     <q-td :props="props">
-                        <q-btn label="编辑" color="primary" size="sm" @click="handleUpdate(props.row)"/>
+                        <q-btn class="q-mr-md" label="编辑班级" color="secondary" size="sm"
+                               @click="handleClassUpdate(props.row)"/>
+                        <q-btn label="编辑信息" color="primary" size="sm"
+                               @click="handleInfoUpdate(props.row)"/>
                     </q-td>
                 </template>
             </q-table>
@@ -76,7 +79,8 @@ import {useQuasar} from "quasar";
 import AddDialog from "components/AddDialog.vue";
 import {teacherColumns} from "components/columns";
 import {getColorFromId, getLabelFromId} from "components/utils";
-
+// TODO:新增教师添加班级信息
+// TODO:查看班级
 const $q = useQuasar()
 //分页管理
 
@@ -154,7 +158,7 @@ function handleNew() {
 
 
 //修改
-function handleUpdate(rows: any) {
+function handleInfoUpdate(rows: any) {
     console.log(dialogColumns)
     addDialog.value = true;
     info.value.title = '修改'

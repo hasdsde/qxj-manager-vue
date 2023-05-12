@@ -147,3 +147,9 @@ export async function getClass(majorId: number, gradeId: number) {
         params: {'majorId': majorId, 'gradeId': gradeId}
     })
 }
+
+
+//获取全部学院信息
+export async function getColleges() {
+    return api.get('/class/college')
+}
