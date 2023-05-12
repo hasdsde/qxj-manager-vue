@@ -45,6 +45,11 @@
                                  :label="getLabelFromId(props,'enable')"/>
                     </q-td>
                 </template>
+                <template v-slot:body-cell-college="props">
+                    <q-td :props="props">
+                        {{ getCollegeById(props.row.college) }}
+                    </q-td>
+                </template>
                 <template v-slot:body-cell-handle="props">
                     <q-td :props="props">
                         <q-btn class="q-mr-md" label="编辑班级" color="secondary" size="sm"
@@ -97,6 +102,7 @@ loadPage()
 
 function loadPage() {
     CommonLoading($q)
+    getColleges()
     api.get("/admin", {
         params: {
             'currentPage': page.value.currentPage,
@@ -204,5 +210,31 @@ function handleDelete() {
     })
 }
 
+//获取全部学院信息
+const colleges = ref([])
 
+function getColleges() {
+    api.get('/class/college').then((res: any) => {
+        res.data.forEach((item: any) => {
+            item.label = item.name
+            item.type = 'college';
+            item.lazy = true;
+            item.children = []
+            item.icon = 'apartment'
+            item.selected = false
+            item.selected = false
+        })
+        colleges.value = res.data
+    })
+}
+
+function getCollegeById(id: number) {
+    let name = ''
+    colleges.value.forEach((item: any) => {
+        if (id == item.id) {
+            name = item.name
+        }
+    })
+    return name
+};
 </script>
