@@ -36,6 +36,18 @@ export function Console(value: any) {
 
 };
 
+//递归调用删除children
+export function LoopDeleteChildren(nodes: any) {
+    return nodes.forEach((item: any) => {
+        item.selected = false
+        if (item.children.length > 0) {
+            LoopDeleteChildren(item.children)
+        } else {
+            return
+        }
+    })
+}
+
 //这个用于表格中的option选项
 export function getLabelFromId(value: any, itemCol: any): string {
     let result = ""

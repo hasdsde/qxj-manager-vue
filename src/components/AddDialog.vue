@@ -136,6 +136,7 @@ function handleParam() {
         column.value.forEach((item: any) => {
             // 判断主键
             if (item.type != 'primary-key' && item.value != null && item.value != "") {
+                //有才赋值，针对密码项目
                 if (item.new) {
                     // 判断是对象
                     if (!allNull(item.value.value)) {
@@ -153,7 +154,7 @@ function handleParam() {
     if (info.value.mode == 'update') {
         column.value.forEach((item: any) => {
             if (item.update && item.value != null && item.value != "") {
-                // 判断是对象
+                // 判断是对象,针对select
                 if (!allNull(item.value.value)) {
                     params[item.name] = item.value.value;
                 } else {

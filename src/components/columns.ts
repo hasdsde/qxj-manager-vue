@@ -67,7 +67,7 @@ export const teacherColumns: any = [
     {name: 'id', align: 'center', label: 'id', field: 'id', type: 'primary-key', update: true},
     {name: 'name', align: 'center', label: '姓名', field: 'name', type: 'input', new: true, update: true},
     {name: 'number', align: 'center', label: '工号', field: 'number', type: 'number', new: true, update: true},
-    {name: 'college', align: 'center', label: '学院', field: 'college', type: 'input', new: true, update: true},
+    {name: 'college', align: 'center', label: '学院', field: 'college', type: 'select', new: true, update: true},
     {name: 'role', align: 'center', label: '角色', field: 'role', type: 'number', new: true, update: true},
     {
         name: 'enable',

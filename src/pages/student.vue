@@ -14,7 +14,7 @@
                              @keydown.enter="loadPage"/>
                     <q-input filled dense v-model="searchNumber" label="学号" class="inline-block q-mr-sm"
                              @keydown.enter="loadPage"/>
-                    <q-input filled dense v-model="searchClass" label="专业班级" class="inline-block q-mr-sm"
+                    <q-input filled dense v-model="searchClass" label="班级" class="inline-block q-mr-sm"
                              @keydown.enter="loadPage"/>
                     <q-btn color="red" class="inline vertical-top q-mr-sm" label="重置" icon="restart_alt"
                            @click="resetSearch"/>

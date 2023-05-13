@@ -2,7 +2,7 @@
     <q-card class="q-ma-md my-card bg-secondary text-white">
         <q-card-section>
             <div class="text-h6">关于</div>
-            <div class="text-subtitle2">by Hasdsd</div>
+            <div class="text-subtitle2">by Hasdsd & zzzzzf2001</div>
         </q-card-section>
 
         <q-card-section>

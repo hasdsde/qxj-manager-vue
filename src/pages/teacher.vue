@@ -10,16 +10,20 @@
                     <q-btn color="secondary" class="q-mr-md" label="新增" icon="add" @click="handleNew"/>
                     <q-btn color="red" class="q-mr-md" label="删除" icon="delete" @click="handleDelete"/>
                 </div>
-                <div class="col text-right">
-                    <q-input filled dense v-model="searchName" label="姓名" class="inline-block q-mr-sm"
+                <div class="row text-right">
+                    <q-input filled dense v-model="searchName" label="姓名" class=" q-mr-sm"
                              @keydown.enter="loadPage"/>
-                    <q-input filled dense v-model="searchNumber" label="工号" class="inline-block q-mr-sm"
+                    <q-input filled dense v-model="searchNumber" label="工号" class=" q-mr-sm"
                              @keydown.enter="loadPage"/>
-                    <q-input filled dense v-model="searchCollege" label="学院" class="inline-block q-mr-sm"
-                             @keydown.enter="loadPage"/>
-                    <q-btn color="red" class="inline vertical-top q-mr-sm" label="重置" icon="restart_alt"
-                           @click="resetSearch"/>
-                    <q-btn color="primary" class="inline vertical-top" label="搜索" icon="search" @click="loadPage"/>
+                    <!--我不理解为什么限定宽度-->
+                    <q-select filled dense v-model="searchCollege" :options="colleges" label="选择学院"
+                              class="q-mr-sm"
+                              @keydown.enter="loadPage" style="width: 200px"/>
+                    <div class="col">
+                        <q-btn color="red" class=" vertical-top q-mr-sm" label="重置" icon="restart_alt"
+                               @click="resetSearch"/>
+                        <q-btn color="primary" class=" vertical-top" label="搜索" icon="search" @click="loadPage"/>
+                    </div>
                 </div>
             </div>
         </div>
@@ -52,7 +56,7 @@
                 </template>
                 <template v-slot:body-cell-handle="props">
                     <q-td :props="props">
-                        <q-btn class="q-mr-md" label="编辑班级" color="secondary" size="sm"
+                        <q-btn class="q-mr-md" label="查看班级" color="secondary" size="sm"
                                @click="handleClassUpdate(props.row)"/>
                         <q-btn label="编辑信息" color="primary" size="sm"
                                @click="handleInfoUpdate(props.row)"/>
@@ -85,7 +89,7 @@ import AddDialog from "components/AddDialog.vue";
 import {teacherColumns} from "components/columns";
 import {getColorFromId, getLabelFromId} from "components/utils";
 // TODO:新增教师添加班级信息
-// TODO:查看班级
+// TODO:清除勾选
 const $q = useQuasar()
 //分页管理
 
@@ -96,7 +100,7 @@ const studentList = ref([])
 const selected = ref([])
 const searchName = ref('')
 const searchNumber = ref('')
-const searchCollege = ref([])
+const searchCollege: any = ref([])
 
 loadPage()
 
@@ -109,7 +113,7 @@ function loadPage() {
             'pageSize': page.value.pageSize,
             'name': searchName.value,
             'number': searchNumber.value,
-            'college': searchCollege.value
+            'college': searchCollege.value.id
         }
     }).then((res: any) => {
         studentList.value = res.data
@@ -165,13 +169,15 @@ function handleNew() {
 
 //修改
 function handleInfoUpdate(rows: any) {
-    console.log(dialogColumns)
     addDialog.value = true;
     info.value.title = '修改'
     info.value.mode = 'update'
     //将既定的命运交给需要之人
     dialogColumns.value.forEach((dialogColumn: any) => {
         dialogColumn.value = rows[dialogColumn.name]
+        if (dialogColumn.name == 'college') {
+            dialogColumn.option = colleges.value
+        }
     })
     if (times == 0) {
         times = times + 1
@@ -217,12 +223,7 @@ function getColleges() {
     api.get('/class/college').then((res: any) => {
         res.data.forEach((item: any) => {
             item.label = item.name
-            item.type = 'college';
-            item.lazy = true;
-            item.children = []
-            item.icon = 'apartment'
-            item.selected = false
-            item.selected = false
+            item.value = item.id
         })
         colleges.value = res.data
     })

@@ -5,6 +5,8 @@
             <q-btn color="secondary" class="q-mr-md" label="新增" icon="add" @click="newItem"/>
             <q-btn color="purple" class="q-mr-md" label="新增学院" icon="apartment" @click="newCollege"/>
             <q-btn color="orange" class="q-mr-md" label="修改" icon="update" @click="updateItem"/>
+            <q-btn color="deep-orange" class="q-mr-md" label="清除勾选" icon="disabled_by_default"
+                   @click="clearSelect"/>
             <q-btn color="red" class="q-mr-md" label="删除" icon="delete" @click="deleteItem"/>
         </div>
         <q-tree
@@ -71,7 +73,7 @@
 import {ref} from "vue";
 import {api} from "boot/axios";
 import {CommonWarn} from "components/commonResults";
-import {commonCheckResponse, getClass, getGradeId, getMajorId} from "components/utils";
+import {commonCheckResponse, getClass, getGradeId, getMajorId, LoopDeleteChildren} from "components/utils";
 import {useQuasar} from "quasar";
 import {useRouter} from "vue-router";
 // TODO:刷新有很大问题
@@ -114,6 +116,11 @@ function defineCheck(value: any) {
     }
 }
 
+//清除全部选中
+function clearSelect() {
+    LoopDeleteChildren(nodes.value)
+    selected.value = []
+}
 
 //新增
 function newItem() {
@@ -257,7 +264,6 @@ const updateDialog = ref(false)
 //获取全部管理员信息
 function getAllAdmin() {
     api.get("/admin/getAllAdmin").then((res: any) => {
-        commonCheckResponse(res)
         res.data.forEach((item: any) => {
             item.label = item.name
             item.value = item.id
