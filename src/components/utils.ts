@@ -40,7 +40,7 @@ export function Console(value: any) {
 export function LoopDeleteChildren(nodes: any) {
     return nodes.forEach((item: any) => {
         item.selected = false
-        if (item.children.length > 0) {
+        if (item.children.length > 0 || allNull(item.children)) {
             LoopDeleteChildren(item.children)
         } else {
             return

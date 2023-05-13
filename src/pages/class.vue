@@ -126,6 +126,7 @@ function clearSelect() {
 function newItem() {
     //确保单选
     if (selected.value.length != 1) {
+        console.log(selected.value)
         CommonWarn('请选择一项')
         return
     }
