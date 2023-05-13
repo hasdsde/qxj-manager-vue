@@ -40,9 +40,12 @@ export default boot(({app}) => {
     })
 
     api.interceptors.response.use(res => {
+        if (res.data.code == "499") {
+            window.location.href = "/#/login"
+        }
         //啥也不返回情况
         if (allNull(res.data)) {
-            CommonFail('未知错误')
+            CommonFail('未知错误');
         } else {
             //返回带信息
             if (res.data.code != "200") {
