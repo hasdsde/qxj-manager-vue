@@ -86,6 +86,7 @@ async function handleLogin() {
     }).then((res: any) => {
         if (res.code == '200') {
             localStorage.setItem('userInfo', JSON.stringify(res.data))
+            localStorage.setItem('token', res.data.token)
             CommonSuccess('登录成功')
             $router.push('/')
         } else {

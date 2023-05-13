@@ -1,6 +1,7 @@
 import {boot} from 'quasar/wrappers';
 import axios, {AxiosInstance} from 'axios';
 import {CommonFail} from 'src/components/commonResults';
+import {allNull} from "components/utils";
 
 declare module '@vue/runtime-core' {
     interface ComponentCustomProperties {
@@ -28,17 +29,30 @@ export default boot(({app}) => {
     //       so you can easily perform requests against your app's API
 
 
-    api.interceptors.response.use(res => {
-
-        if (res.data.code === "401") {
-            CommonFail("当前账号已失效，请与管理员联系")
-        } else if (res.data.code != "200") {
-            CommonFail("错误:" + res.data.code + " " + res.data.msg)
+    // 请求拦截器
+    api.interceptors.request.use((config) => {
+        if (localStorage.getItem('token') == null) {
+            window.location.href = "/#/login"
+        } else {
+            config.headers['token'] = localStorage.getItem('token')
         }
-        // 不要返回res.data不然会抛出错误
+        return config;
+    })
+
+    api.interceptors.response.use(res => {
+        //啥也不返回情况
+        if (allNull(res.data)) {
+            CommonFail('未知错误')
+        } else {
+            //返回带信息
+            if (res.data.code != "200") {
+                CommonFail("错误:" + res.data.code + " " + res.data.msg);
+            }
+        }
         return res.data
     }, err => {
-        console.log(err.message);
+        console.log(err)
+        CommonFail(err.message)
     });
 });
 
